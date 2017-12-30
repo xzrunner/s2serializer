@@ -1,0 +1,5 @@
+sns/
+projects/*
+
+!projects/sns.vcxproj
+!projects/sns.vcxproj.filters
