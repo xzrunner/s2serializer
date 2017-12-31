@@ -8,8 +8,6 @@
 #include <bs/FixedPointNum.h>
 #include <memmgr/LinearAllocator.h>
 
-#include <json/value.h>
-
 namespace sns
 {
 
@@ -40,7 +38,7 @@ void NodeSprBase::StoreToBin(bs::ExportStream& es) const
 	es.WriteBlock(reinterpret_cast<uint8_t*>(m_data), DataSize(m_type)); // data
 }
 
-void NodeSprBase::StoreToJson(Json::Value& val) const
+void NodeSprBase::StoreToJson(rapidjson::Value& val) const
 {
 
 }
@@ -105,20 +103,18 @@ void NodeSprBase::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	}
 }
 
-void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& val)
+void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	// load name
 	m_name = nullptr;
-	if (val.isMember("name")) {
-		std::string name = val["name"].asString();
-		m_name = String2Char(alloc, name);
+	if (val.HasMember("name")) {
+		m_name = CopyJsonStr(alloc, val["name"]);
 	}
 
 	// load filepath
 	m_sym_path = nullptr;
-	if (val.isMember("filepath")) {
-		std::string filepath = val["filepath"].asString();
-		m_sym_path = String2Char(alloc, filepath);
+	if (val.HasMember("filepath")) {
+		m_sym_path = CopyJsonStr(alloc, val["filepath"]);
 	}
 
 	m_type = 0;
@@ -127,11 +123,11 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load scale
 	float scale[2] = { 1, 1 };
-	if (val.isMember("x scale") && val.isMember("y scale")) {
-		scale[0] = static_cast<float>(val["x scale"].asDouble());
-		scale[1] = static_cast<float>(val["y scale"].asDouble());
-	} else if (val.isMember("scale")) {
-		scale[0] = scale[1] = static_cast<float>(val["scale"].asDouble());
+	if (val.HasMember("x scale") && val.HasMember("y scale")) {
+		scale[0] = val["x scale"].GetFloat();
+		scale[1] = val["y scale"].GetFloat();
+	} else if (val.HasMember("scale")) {
+		scale[0] = scale[1] = val["scale"].GetFloat();
 	}
 	if (scale[0] != 1 || scale[1] != 1) {
 		m_type |= SCALE_MASK;
@@ -141,9 +137,9 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load shear
 	float shear[2] = { 0, 0 };
-	if (val.isMember("x shear") && val.isMember("y shear")) {
-		shear[0] = static_cast<float>(val["x shear"].asDouble());
-		shear[1] = static_cast<float>(val["y shear"].asDouble());
+	if (val.HasMember("x shear") && val.HasMember("y shear")) {
+		shear[0] = val["x shear"].GetFloat();
+		shear[1] = val["y shear"].GetFloat();
 	}
 	if (shear[0] != 0 || shear[1] != 0) {
 		m_type |= SHEAR_MASK;
@@ -153,10 +149,10 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load offset
 	float offset[2] = { 0, 0 };
-	if (val.isMember("x offset") && val.isMember("y offset"))
+	if (val.HasMember("x offset") && val.HasMember("y offset"))
 	{
-		offset[0] = static_cast<float>(val["x offset"].asDouble());
-		offset[1] = static_cast<float>(val["y offset"].asDouble());
+		offset[0] = val["x offset"].GetFloat();
+		offset[1] = val["y offset"].GetFloat();
 	}
 	if (offset[0] != 0 || offset[1] != 0) {
 		m_type |= OFFSET_MASK;
@@ -166,9 +162,9 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load position
 	float position[2] = { 0, 0 };
-	if (val.isMember("position") && val["position"].isMember("x") && val["position"].isMember("y")) {
-		position[0] = static_cast<float>(val["position"]["x"].asDouble());
-		position[1] = static_cast<float>(val["position"]["y"].asDouble());
+	if (val.HasMember("position") && val["position"].HasMember("x") && val["position"].HasMember("y")) {
+		position[0] = val["position"]["x"].GetFloat();
+		position[1] = val["position"]["y"].GetFloat();
 	}
 	if (position[0] != 0 || position[1] != 0) {
 		m_type |= POSITION_MASK;
@@ -178,8 +174,8 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load rotate
 	float angle = 0;
-	if (val.isMember("angle")) {
-		angle = static_cast<float>(val["angle"].asDouble());
+	if (val.HasMember("angle")) {
+		angle = val["angle"].GetFloat();
 	}
 	if (angle != 0) {
 		m_type |= SCALE_MASK;
@@ -188,11 +184,9 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load¡¡color mul
 	uint32_t col_mul = 0xffffffff;
-	if (val.isMember("multi color")) {
-		std::string str = val["multi color"].asString();
-		if (!str.empty()) {
-			col_mul = ColorParser::StringToRGBA(str, BGRA);
-		}
+	if (val.HasMember("multi color")) {
+		auto& col_val(val["multi color"]);
+		col_mul = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), BGRA);
 	}
 	if (col_mul != 0xffffffff) {
 		m_type |= COL_MUL_MASK;
@@ -201,11 +195,9 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load color add
 	uint32_t col_add = 0;
-	if (val.isMember("add color")) {
-		std::string str = val["add color"].asString();
-		if (!str.empty()) {
-			col_add = ColorParser::StringToRGBA(str, ABGR);
-		}
+	if (val.HasMember("add color")) {
+		auto& col_val(val["add color"]);
+		col_add = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), ABGR);
 	}
 	if (col_add != 0) {
 		m_type |= COL_ADD_MASK;
@@ -214,12 +206,10 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load color rmap
 	uint32_t col_rmap = 0xff000000;
-	if (val.isMember("r trans")) {
-		std::string str = val["r trans"].asString();
-		if (!str.empty()) {
-			col_rmap = ColorParser::StringToRGBA(str, RGBA);
-			col_rmap &= 0xffffff00;
-		}
+	if (val.HasMember("r trans")) {
+		auto& col_val(val["r trans"]);
+		col_rmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_rmap &= 0xffffff00;
 	}
 	if (col_rmap != 0xff000000) {
 		m_type |= COL_R_MASK;
@@ -228,12 +218,10 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load color gmap
 	uint32_t col_gmap = 0x00ff0000;
-	if (val.isMember("g trans")) {
-		std::string str = val["g trans"].asString();
-		if (!str.empty()) {
-			col_gmap = ColorParser::StringToRGBA(str, RGBA);
-			col_gmap &= 0xffffff00;
-		}
+	if (val.HasMember("g trans")) {
+		auto& col_val(val["g trans"]);
+		col_gmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_gmap &= 0xffffff00;
 	}
 	if (col_gmap != 0x00ff0000) {
 		m_type |= COL_G_MASK;
@@ -242,12 +230,10 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& va
 
 	// load color bmap
 	uint32_t col_bmap = 0x0000ff00;
-	if (val.isMember("b trans")) {
-		std::string str = val["b trans"].asString();
-		if (!str.empty()) {
-			col_bmap = ColorParser::StringToRGBA(str, RGBA);
-			col_bmap &= 0xffffff00;
-		}
+	if (val.HasMember("b trans")) {
+		auto& col_val(val["b trans"]);
+		col_bmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_bmap &= 0xffffff00;
 	}
 	if (col_bmap != 0x0000ff00) {
 		m_type |= COL_B_MASK;
@@ -320,16 +306,17 @@ size_t NodeSprBase::DataSize(uint32_t type)
 	return ALIGN_4BYTE(sz);
 }
 
-char* NodeSprBase::String2Char(mm::LinearAllocator& alloc, const std::string& str)
+char* NodeSprBase::CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
-	if (str.empty()) {
+	size_t len = val.GetStringLength();
+	if (len == 0) {
 		return nullptr;
 	}
 
-	char* ret = static_cast<char*>(alloc.alloc<char>(str.size() + 1));
+	char* ret = static_cast<char*>(alloc.alloc<char>(len + 1));
 
-	strcpy(ret, str.c_str());
-	ret[str.size()] = 0;
+	strncpy(ret, val.GetString(), len);
+	ret[len] = 0;
 
 	return ret;
 }

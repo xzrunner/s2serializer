@@ -2,6 +2,9 @@
 
 #include <guard/check.h>
 
+#include <cstring>
+#include <string>
+
 namespace sns
 {
 
@@ -28,16 +31,16 @@ int char2channel(char high, char low)
 	return col;
 }
 
-uint32_t ColorParser::StringToRGBA(const std::string& str, PIXEL_TYPE type)
+uint32_t ColorParser::StringToRGBA(const char* str, size_t str_len, PIXEL_TYPE type)
 {
-	if (str.empty()) {
+	if (str_len == 0) {
 		return 0;
 	}
-	if (str == "0xffffffff") {
+	if (strncmp(str, "0xffffffff", str_len) == 0) {
 		return 0xffffffff;
 	}
 
-	std::string snum = str;
+	std::string snum(str, str_len);
 	if (snum[0] != '0' || (snum[1] != 'x' && snum[1] != 'X'))
 	{
 		int n = atoi(snum.c_str());

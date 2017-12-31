@@ -1,8 +1,8 @@
 #pragma once
 
-#include <stdint.h>
+#include <rapidjson/document.h>
 
-namespace Json { class Value; }
+#include <stdint.h>
 
 namespace sns
 {
@@ -16,7 +16,7 @@ public:
 	// serialization
 	//
 	virtual void StoreToBin(uint8_t** data, size_t& length) const = 0;
-	virtual void StoreToJson(Json::Value& val) const = 0;
+	virtual void StoreToJson(rapidjson::Value& val) const = 0;
 
 }; // NodeSym
 

@@ -23,7 +23,7 @@ void ComplexSpr::StoreToBin(bs::ExportStream& es) const
 	es.Write(static_cast<uint16_t>(m_action));    // action
 }
 
-void ComplexSpr::StoreToJson(Json::Value& val) const
+void ComplexSpr::StoreToJson(rapidjson::Value& val) const
 {
 	m_base_info.StoreToJson(val);
 }
@@ -34,7 +34,7 @@ void ComplexSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	m_action = is.UInt16();
 }
 
-void ComplexSpr::LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& val)
+void ComplexSpr::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	m_base_info.LoadFromJson(alloc, val);
 }

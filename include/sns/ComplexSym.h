@@ -22,13 +22,13 @@ public:
 	// serialization
 	//
 	virtual void StoreToBin(uint8_t** data, size_t& length) const override;
-	virtual void StoreToJson(Json::Value& val) const override;
+	virtual void StoreToJson(rapidjson::Value& val) const override;
 
 	//
 	// deserialization
 	//
 	static ComplexSym* Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	static ComplexSym* Create(mm::LinearAllocator& alloc, Json::Value& val);
+	static ComplexSym* Create(mm::LinearAllocator& alloc, rapidjson::Value& val);
 
 	void GetScissor(int16_t& xmin, int16_t& ymin, int16_t& xmax, int16_t& ymax) const;
 

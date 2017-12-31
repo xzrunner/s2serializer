@@ -2,9 +2,10 @@
 
 #include "sns/NodeSprBase.h"
 
+#include <rapidjson/document.h>
+
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; class ExportStream; }
-namespace Json { class Value; }
 
 namespace sns
 {
@@ -19,13 +20,13 @@ public:
 	//
 	virtual size_t GetBinSize() const = 0;
 	virtual void StoreToBin(bs::ExportStream& es) const = 0;
-	virtual void StoreToJson(Json::Value& val) const = 0;
+	virtual void StoreToJson(rapidjson::Value& val) const = 0;
 
 	//
 	// deserialization
 	//
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) = 0;
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& val) = 0;
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) = 0;
 
 	const NodeSprBase& GetBaseInfo() const { return m_base_info; }
 

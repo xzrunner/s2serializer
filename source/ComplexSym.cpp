@@ -7,8 +7,6 @@
 #include <bs/typedef.h>
 #include <bs/Serializer.h>
 
-#include <json/json.h>
-
 namespace sns
 {
 
@@ -39,7 +37,7 @@ void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
 	}
 }
 
-void ComplexSym::StoreToJson(Json::Value& val) const
+void ComplexSym::StoreToJson(rapidjson::Value& val) const
 {
 	// scissor
 	val["xmin"] = m_scissor[0];
@@ -93,9 +91,10 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	return sym;
 }
 
-ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, Json::Value& val)
+ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, rapidjson::Value& val)
 {
-	int children_n = val["sprite"].size();
+	auto& children = val["sprite"].GetArray();
+	int children_n = children.Size();
 
 	size_t sz = ALIGN_4BYTE(sizeof(ComplexSym) - sizeof(NodeSpr*) 
 		+ sizeof(NodeSpr*) * children_n);
@@ -103,15 +102,16 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, Json::Value& val)
 	ComplexSym* sym = new (ptr) ComplexSym();
 
 	// scissor
-	sym->m_scissor[0] = val["xmin"].asInt();
-	sym->m_scissor[1] = val["ymin"].asInt();
-	sym->m_scissor[2] = val["xmax"].asInt();
-	sym->m_scissor[3] = val["ymax"].asInt();
+	sym->m_scissor[0] = static_cast<int16_t>(val["xmin"].GetFloat());
+	sym->m_scissor[1] = static_cast<int16_t>(val["ymin"].GetFloat());
+	sym->m_scissor[2] = static_cast<int16_t>(val["xmax"].GetFloat());
+	sym->m_scissor[3] = static_cast<int16_t>(val["ymax"].GetFloat());
 
 	// children
 	sym->m_children_n = children_n;
-	for (int i = 0; i < children_n; ++i) {
-		sym->m_children[i] = NodeFactory::CreateNodeSpr(alloc, val["sprite"][i]);
+	int idx = 0;
+	for (auto& child : children) {
+		sym->m_children[idx++] = NodeFactory::CreateNodeSpr(alloc, child);
 	}
 
 	// actions

@@ -2,13 +2,14 @@
 
 #include <cu/uncopyable.h>
 
+#include <rapidjson/document.h>
+
 #include <string>
 
 #include <stdint.h>
 
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; class ExportStream; }
-namespace Json { class Value; }
 
 namespace sns
 {
@@ -23,13 +24,13 @@ public:
 	//
 	size_t GetBinSize() const;
 	void StoreToBin(bs::ExportStream& es) const;
-	void StoreToJson(Json::Value& val) const;
+	void StoreToJson(rapidjson::Value& val) const;
 
 	//
 	// deserialization
 	//
 	void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	void LoadFromJson(mm::LinearAllocator& alloc, const Json::Value& val);
+	void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val);
 
 	const char* GetFilepath() const { return m_sym_path; }
 
@@ -39,7 +40,7 @@ public:
 protected:
 	static size_t DataSize(uint32_t type);
 
-	static char* String2Char(mm::LinearAllocator& alloc, const std::string& str);
+	static char* CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val);
 
 public:
 	// geometry

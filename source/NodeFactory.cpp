@@ -7,9 +7,7 @@
 
 #include <guard/check.h>
 #include <bs/ImportStream.h>
-
-#include <json/value.h>
-#include <json/reader.h>
+#include <js/RapidJsonHelper.h>
 
 #include <algorithm>
 #include <fstream>
@@ -28,10 +26,9 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, bs::ImportStream
 	return spr;
 }
 
-NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, const Json::Value& val)
+NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
-	std::string filepath = val["filepath"].asString();
-	NodeType type = GetNodeType(filepath);
+	NodeType type = GetNodeType(val["filepath"].GetString());
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 
 	NodeSpr* spr = CreateNodeSpr(alloc, type);
@@ -70,16 +67,9 @@ NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, const std::strin
 	{
 	case NODE_COMPLEX:
 		{
-			Json::Value val;
-			Json::Reader reader;
-			std::locale::global(std::locale(""));
-			std::ifstream fin(filepath.c_str());
-			std::locale::global(std::locale("C"));
-			reader.parse(fin, val);
-			fin.close();
-
-			sym = ComplexSym::Create(alloc, val);
-
+			rapidjson::Document doc;
+			js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
+			sym = ComplexSym::Create(alloc, doc);
 			break;
 		}
 	default:
