@@ -34,13 +34,46 @@ void NodeSprBase::StoreToBin(bs::ExportStream& es) const
 	es.Write(m_sym_path); // sym_path
 	es.Write(m_name);     // name
 	es.Write(m_type);     // type
-	int zz = DataSize(m_type);
 	es.WriteBlock(reinterpret_cast<uint8_t*>(m_data), DataSize(m_type)); // data
 }
 
-void NodeSprBase::StoreToJson(rapidjson::Value& val) const
+void NodeSprBase::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
 {
+	// store name
+	if (m_name) {
+		val["name"].SetString(m_name, alloc);
+	}
 
+	// store filepath
+	if (m_sym_path) {
+		val["filepath"].SetString(m_sym_path, alloc);
+	}
+
+	int idx = 0;
+	// store scale
+	if ((m_type & SCALE_MASK) && (m_data[idx] != HIGH_FIXED_TRANS_PRECISION || m_data[idx + 1] != HIGH_FIXED_TRANS_PRECISION)) {
+		val["x scale"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+		val["y scale"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+	}
+	// store shear
+	if ((m_type & SHEAR_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
+		val["x shear"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+		val["y shear"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+	}
+	// store offset
+	if ((m_type & OFFSET_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
+		val["x offset"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+		val["y offset"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+	}
+	// store position
+	if ((m_type & POSITION_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
+		val["position"]["x"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+		val["position"]["y"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+	}
+	// store angle
+	if ((m_type & ANGLE_MASK) && m_data[idx] != 0) {
+		val["angle"]["x"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+	}
 }
 
 void NodeSprBase::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
@@ -49,7 +82,6 @@ void NodeSprBase::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	m_name = is.String(alloc);
 	m_type = is.UInt32();
 
-	int zz = DataSize(m_type);
 	m_data = static_cast<uint32_t*>(alloc.alloc<char>(DataSize(m_type)));
 	int idx = 0;
 	if (m_type & SCALE_MASK) {
@@ -178,7 +210,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 		angle = val["angle"].GetFloat();
 	}
 	if (angle != 0) {
-		m_type |= SCALE_MASK;
+		m_type |= ANGLE_MASK;
 		data.push_back(bs::float2int(angle, HIGH_FIXED_TRANS_PRECISION));
 	}
 

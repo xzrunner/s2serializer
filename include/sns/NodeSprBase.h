@@ -3,6 +3,7 @@
 #include <cu/uncopyable.h>
 
 #include <rapidjson/document.h>
+#include <rapidjson/allocators.h>
 
 #include <string>
 
@@ -24,7 +25,7 @@ public:
 	//
 	size_t GetBinSize() const;
 	void StoreToBin(bs::ExportStream& es) const;
-	void StoreToJson(rapidjson::Value& val) const;
+	void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const;
 
 	//
 	// deserialization
@@ -69,7 +70,7 @@ public:
 	static const int INTEGRATE_MASK     = 1 << 29;
 
 public:
-	static const int LOW_FIXED_TRANS_PRECISION = 1024;
+	static const int LOW_FIXED_TRANS_PRECISION  = 1024;
 	static const int HIGH_FIXED_TRANS_PRECISION = 8192;
 
 private:
