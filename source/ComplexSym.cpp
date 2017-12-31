@@ -37,7 +37,7 @@ void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
 	}
 }
 
-void ComplexSym::StoreToJson(rapidjson::Value& val) const
+void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 	// scissor
 	val["xmin"] = m_scissor[0];
@@ -47,7 +47,7 @@ void ComplexSym::StoreToJson(rapidjson::Value& val) const
 
 	// children
 	for (int i = 0; i < m_children_n; ++i) {
-		m_children[i]->StoreToJson(val["sprite"][i]);
+		m_children[i]->StoreToJson(val["sprite"][i], alloc);
 	}
 }
 

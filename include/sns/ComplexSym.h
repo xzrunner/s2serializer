@@ -22,7 +22,7 @@ public:
 	// serialization
 	//
 	virtual void StoreToBin(uint8_t** data, size_t& length) const override;
-	virtual void StoreToJson(rapidjson::Value& val) const override;
+	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
 	// deserialization

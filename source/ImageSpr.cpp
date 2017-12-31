@@ -20,9 +20,9 @@ void ImageSpr::StoreToBin(bs::ExportStream& es) const
 	m_base_info.StoreToBin(es);                  // base
 }
 
-void ImageSpr::StoreToJson(rapidjson::Value& val) const
+void ImageSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
 {
-	m_base_info.StoreToJson(val);
+	m_base_info.StoreToJson(val, alloc);
 }
 
 void ImageSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)

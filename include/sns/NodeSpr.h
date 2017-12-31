@@ -20,7 +20,7 @@ public:
 	//
 	virtual size_t GetBinSize() const = 0;
 	virtual void StoreToBin(bs::ExportStream& es) const = 0;
-	virtual void StoreToJson(rapidjson::Value& val) const = 0;
+	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const = 0;
 
 	//
 	// deserialization

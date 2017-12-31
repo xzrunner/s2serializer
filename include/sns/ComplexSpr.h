@@ -13,7 +13,7 @@ public:
 	//
 	virtual size_t GetBinSize() const override;
 	virtual void StoreToBin(bs::ExportStream& es) const override;
-	virtual void StoreToJson(rapidjson::Value& val) const override;
+	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
 	// deserialization
