@@ -23,6 +23,7 @@ public:
 
 	static NodeSym* CreateNodeSym(mm::LinearAllocator& alloc, bs::ImportStream& is);
 	static NodeSym* CreateNodeSym(mm::LinearAllocator& alloc, const std::string& filepath);
+	static NodeSym* CreateNodeSym(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type);
 
 private:
 	static NodeType GetNodeType(const std::string& filepath);

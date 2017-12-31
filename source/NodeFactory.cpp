@@ -59,17 +59,23 @@ NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, bs::ImportStream
 
 NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, const std::string& filepath)
 {
+	NodeType type = GetNodeType(filepath);
+	GD_ASSERT(type != NODE_INVALID, "err node type.");
+	rapidjson::Document doc;
+	js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
+	return CreateNodeSym(alloc, doc, type);
+}
+
+NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type)
+{
 	NodeSym* sym = nullptr;
 
-	NodeType type = GetNodeType(filepath);
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 	switch (type)
 	{
 	case NODE_COMPLEX:
 		{
-			rapidjson::Document doc;
-			js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
-			sym = ComplexSym::Create(alloc, doc);
+			sym = ComplexSym::Create(alloc, val);
 			break;
 		}
 	default:
