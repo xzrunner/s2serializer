@@ -91,7 +91,7 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	return sym;
 }
 
-ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, rapidjson::Value& val)
+ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	auto& children = val["sprite"].GetArray();
 	int children_n = children.Size();
