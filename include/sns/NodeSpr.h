@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sns/NodeSprBase.h"
+#include "sns/NodeSprCommon.h"
 
 #include <rapidjson/document.h>
 
@@ -10,7 +10,7 @@ namespace bs { class ImportStream; class ExportStream; }
 namespace sns
 {
 
-class NodeSpr
+class NodeSpr : private cu::Uncopyable
 {
 public:
 	virtual ~NodeSpr() {}
@@ -25,13 +25,14 @@ public:
 	//
 	// deserialization
 	//
+	
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) = 0;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) = 0;
 
-	const NodeSprBase& GetBaseInfo() const { return m_base_info; }
+	const NodeSprCommon& GetCommon() const { return m_common; }
 
 protected:
-	NodeSprBase m_base_info;
+	NodeSprCommon m_common;
 
 }; // NodeSpr
 

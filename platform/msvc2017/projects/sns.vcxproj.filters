@@ -13,6 +13,15 @@
     <Filter Include="sym">
       <UniqueIdentifier>{2fdedfd8-0d1c-460a-8f77-3d3bf14b5ae1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="15.model">
+      <UniqueIdentifier>{e79d42c4-01ac-4aa9-9644-434304128a7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.textbox">
+      <UniqueIdentifier>{7f90fe13-7571-438e-9346-0b60fc9cfe6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07.anim">
+      <UniqueIdentifier>{2ef4a97d-ae29-427f-98d5-acba28b38a36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h">
@@ -35,8 +44,23 @@
     <ClInclude Include="..\..\..\include\sns\NodeSym.h">
       <Filter>sym</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\NodeSprBase.h">
+    <ClInclude Include="..\..\..\include\sns\TextboxSpr.h">
+      <Filter>05.textbox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\Textbox.h">
+      <Filter>05.textbox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\NodeSprCommon.h">
       <Filter>spr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\TexturePacker.h">
+      <Filter>01.image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\AnimSpr.h">
+      <Filter>07.anim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\AnimSym.h">
+      <Filter>07.anim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +77,26 @@
     <ClCompile Include="..\..\..\source\ColorParser.cpp">
       <Filter>spr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\NodeSprBase.cpp">
+    <ClCompile Include="..\..\..\source\TextboxSpr.cpp">
+      <Filter>05.textbox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Textbox.cpp">
+      <Filter>05.textbox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeSprCommon.cpp">
       <Filter>spr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\NodeSpr.cpp">
+      <Filter>spr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\TexturePacker.cpp">
+      <Filter>01.image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AnimSpr.cpp">
+      <Filter>07.anim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AnimSym.cpp">
+      <Filter>07.anim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

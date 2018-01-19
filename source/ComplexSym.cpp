@@ -4,7 +4,6 @@
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
-#include <bs/typedef.h>
 #include <bs/Serializer.h>
 
 namespace sns
@@ -20,21 +19,23 @@ void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
 	es.Write(static_cast<uint8_t>(NODE_COMPLEX));
 
 	// scissor
-	for (int i = 0; i < 4; ++i) {
-		es.Write(static_cast<uint16_t>(m_scissor[i]));
+	for (size_t i = 0; i < 4; ++i) {
+		es.Write(static_cast<int16_t>(m_scissor[i]));
 	}
 
 	// children
 	es.Write(static_cast<uint16_t>(m_children_n));
-	for (int i = 0; i < m_children_n; ++i) {
+	for (size_t i = 0; i < m_children_n; ++i) {
 		m_children[i]->StoreToBin(es);
 	}
 
 	// actions
 	es.Write(static_cast<uint16_t>(m_actions_n));
-	for (int i = 0; i < m_actions_n; ++i) {
+	for (size_t i = 0; i < m_actions_n; ++i) {
 		m_actions[i].StoreToBin(es);
 	}
+
+	GD_ASSERT(es.Empty(), "error bin sz");
 }
 
 void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
@@ -46,41 +47,32 @@ void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocat
 	val["ymax"] = m_scissor[3];
 
 	// children
-	for (int i = 0; i < m_children_n; ++i) {
+	for (size_t i = 0; i < m_children_n; ++i) {
 		m_children[i]->StoreToJson(val["sprite"][i], alloc);
 	}
 }
 
 ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 {
-	// scissor
-	int16_t scissor[4];
-	for (int i = 0; i < 4; ++i) {
-		scissor[i] = is.UInt16();
-	}
-
-	size_t children_n = is.UInt16();
-
-	size_t sz = ALIGN_4BYTE(sizeof(ComplexSym) - sizeof(NodeSpr*)
-		+ sizeof(NodeSpr*) * children_n);
-	void* ptr = alloc.alloc<char>(sz);
+	void* ptr = alloc.alloc<char>(MemSize());
 	ComplexSym* sym = new (ptr) ComplexSym();
 
 	// scissor
-	for (int i = 0; i < 4; ++i) {
-		sym->m_scissor[i] = scissor[i];
+	for (size_t i = 0; i < 4; ++i) {
+		sym->m_scissor[i] = is.UInt16();
 	}
 
 	// children
-	sym->m_children_n = static_cast<uint16_t>(children_n);
-	for (size_t i = 0; i < children_n; ++i) {
-		sym->m_children[i] = NodeFactory::CreateNodeSpr(alloc, is);
+	sym->m_children_n = is.UInt16();
+	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
+	for (size_t i = 0; i < sym->m_children_n; ++i) {
+		sym->m_children[i] = NodeFactory::CreateSprFromBin(alloc, is);
 	}
 
 	// actions
 	uint16_t actions_n = is.UInt16();
 	sym->m_actions_n = static_cast<uint16_t>(actions_n);
-	sym->m_actions = static_cast<Action*>(alloc.alloc<char>(sizeof(Action) * actions_n));
+	sym->m_actions = static_cast<Action*>(alloc.alloc<char>(Action::MemSize() * actions_n));
 	for (size_t i = 0; i < actions_n; ++i)
 	{
 		Action* dst = &sym->m_actions[i];
@@ -93,12 +85,7 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 
 ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
-	auto& children = val["sprite"].GetArray();
-	int children_n = children.Size();
-
-	size_t sz = ALIGN_4BYTE(sizeof(ComplexSym) - sizeof(NodeSpr*) 
-		+ sizeof(NodeSpr*) * children_n);
-	void* ptr = alloc.alloc<char>(sz);
+	void* ptr = alloc.alloc<char>(MemSize());
 	ComplexSym* sym = new (ptr) ComplexSym();
 
 	// scissor
@@ -108,10 +95,12 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const rapidjson::Valu
 	sym->m_scissor[3] = static_cast<int16_t>(val["ymax"].GetFloat());
 
 	// children
-	sym->m_children_n = children_n;
+	auto children = val["sprite"].GetArray();
+	sym->m_children_n = children.Size();
+	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
 	int idx = 0;
 	for (auto& child : children) {
-		sym->m_children[idx++] = NodeFactory::CreateNodeSpr(alloc, child);
+		sym->m_children[idx++] = NodeFactory::CreateSprFromJson(alloc, child);
 	}
 
 	// actions
@@ -137,16 +126,15 @@ size_t ComplexSym::GetBinSize() const
 	// type
 	sz += sizeof(uint8_t);
 	// scissor
-	sz += sizeof(uint16_t) * 4;
+	sz += sizeof(int16_t) * 4;
 	// children
-	sz += sizeof(uint16_t);
-	sz += sizeof(uint32_t) * m_children_n;
-	for (int i = 0; i < m_children_n; ++i) {
+	sz += sizeof(m_children_n);
+	for (size_t i = 0; i < m_children_n; ++i) {
 		sz += m_children[i]->GetBinSize();
 	}
 	// actions
-	sz += sizeof(uint16_t);
-	for (int i = 0; i < m_actions_n; ++i) {
+	sz += sizeof(m_actions_n);
+	for (size_t i = 0; i < m_actions_n; ++i) {
 		sz += m_actions[i].GetBinSize();
 	}
 
@@ -167,7 +155,7 @@ void ComplexSym::Action::StoreToBin(bs::ExportStream& es) const
 {
 	es.Write(name);
 	es.Write(static_cast<uint16_t>(n));
-	for (int i = 0; i < n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		es.Write(static_cast<uint16_t>(idx[i]));
 	}
 }

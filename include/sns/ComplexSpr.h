@@ -18,8 +18,8 @@ public:
 	//
 	// deserialization
 	//
-	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) override;
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) override;
 
 private:
 	uint32_t m_action = 0;

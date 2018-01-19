@@ -2,8 +2,11 @@
 #include "sns/NodeType.h"
 
 #include "sns/ImageSpr.h"
+#include "sns/TextboxSpr.h"
 #include "sns/ComplexSpr.h"
 #include "sns/ComplexSym.h"
+#include "sns/AnimSpr.h"
+#include "sns/AnimSym.h"
 
 #include <guard/check.h>
 #include <bs/ImportStream.h>
@@ -15,7 +18,7 @@
 namespace sns
 {
 
-NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, bs::ImportStream& is)
+NodeSpr* NodeFactory::CreateSprFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 {
 	NodeType type = static_cast<NodeType>(is.UInt8());
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
@@ -26,7 +29,7 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, bs::ImportStream
 	return spr;
 }
 
-NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+NodeSpr* NodeFactory::CreateSprFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	NodeType type = GetNodeType(val["filepath"].GetString());
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
@@ -37,7 +40,7 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, const rapidjson:
 	return spr;
 }
 
-NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, bs::ImportStream& is)
+NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 {
 	NodeSym* sym = nullptr;
 
@@ -46,10 +49,11 @@ NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, bs::ImportStream
 	switch (type)
 	{
 	case NODE_COMPLEX:
-		{
-			sym = ComplexSym::Create(alloc, is);
-			break;
-		}
+		sym = ComplexSym::Create(alloc, is);
+		break;
+	case NODE_ANIMATION:
+		sym = AnimSym::Create(alloc, is);
+		break;
 	default:
 		GD_REPORT_ASSERT("unknown node type.");
 	}
@@ -57,27 +61,48 @@ NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, bs::ImportStream
 	return sym;
 }
 
-NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, const std::string& filepath)
+NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, const std::string& filepath)
+{
+	std::ifstream fin(filepath, std::ios::binary);
+	fin.seekg(0, std::ios::end);
+	size_t len = static_cast<size_t>(fin.tellg());
+	fin.seekg(0, std::ios::beg);
+	char* data = new char[len];
+	fin.read(data, len);
+	fin.close();
+
+	auto sym = CreateSymFromBin(alloc, bs::ImportStream(data, len));
+	delete[] data;
+
+	return sym;
+}
+
+NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const std::string& filepath)
 {
 	NodeType type = GetNodeType(filepath);
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 	rapidjson::Document doc;
 	js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
-	return CreateNodeSym(alloc, doc, type);
+	return CreateSymFromJson(alloc, doc, type);
 }
 
-NodeSym* NodeFactory::CreateNodeSym(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type)
+NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type)
 {
 	NodeSym* sym = nullptr;
 
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 	switch (type)
 	{
+	case NODE_IMAGE:
+		break;
 	case NODE_COMPLEX:
-		{
-			sym = ComplexSym::Create(alloc, val);
-			break;
-		}
+		sym = ComplexSym::Create(alloc, val);
+		break;
+	case NODE_ANIMATION:
+		sym = AnimSym::Create(alloc, val);
+		break;
+	case NODE_TEXTBOX:
+		break;
 	default:
 		GD_REPORT_ASSERT("unknown node type.");
 	}
@@ -147,6 +172,9 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, NodeType type)
 		break;
 	case NODE_COMPLEX:
 		CREATE_NODE_SPR(ComplexSpr);
+		break;
+	case NODE_TEXTBOX:
+		CREATE_NODE_SPR(TextboxSpr);
 		break;
 	default:
 		GD_REPORT_ASSERT("unknown node type.");

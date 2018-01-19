@@ -1,15 +1,16 @@
 #pragma once
 
 #include "sns/NodeSpr.h"
-
-#include <string>
+#include "sns/Textbox.h"
 
 namespace sns
 {
-	
-class ImageSpr : public NodeSpr
+
+class TextboxSpr : public NodeSpr
 {
 public:
+	TextboxSpr();
+
 	//
 	// serialization
 	//
@@ -22,11 +23,13 @@ public:
 	//
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) override;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) override;
-	
-//private:
-//	int16_t m_xmin, m_ymin, m_xmax, m_ymax;
-//	int16_t m_offx, m_offy;
 
-}; // NodeImgae
+private:
+	Textbox m_tb;
+
+	std::string m_text;
+	std::string m_tid;
+
+}; // TextboxSpr
 
 }

@@ -11,23 +11,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\sns\AnimSpr.h" />
+    <ClInclude Include="..\..\..\include\sns\AnimSym.h" />
     <ClInclude Include="..\..\..\include\sns\ColorParser.h" />
     <ClInclude Include="..\..\..\include\sns\ComplexSpr.h" />
     <ClInclude Include="..\..\..\include\sns\ComplexSym.h" />
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h" />
     <ClInclude Include="..\..\..\include\sns\NodeSpr.h" />
     <ClInclude Include="..\..\..\include\sns\NodeFactory.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeSprBase.h" />
+    <ClInclude Include="..\..\..\include\sns\NodeSprCommon.h" />
     <ClInclude Include="..\..\..\include\sns\NodeSym.h" />
     <ClInclude Include="..\..\..\include\sns\NodeType.h" />
+    <ClInclude Include="..\..\..\include\sns\Textbox.h" />
+    <ClInclude Include="..\..\..\include\sns\TextboxSpr.h" />
+    <ClInclude Include="..\..\..\include\sns\TexturePacker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\AnimSpr.cpp" />
+    <ClCompile Include="..\..\..\source\AnimSym.cpp" />
     <ClCompile Include="..\..\..\source\ColorParser.cpp" />
     <ClCompile Include="..\..\..\source\ComplexSpr.cpp" />
     <ClCompile Include="..\..\..\source\ComplexSym.cpp" />
     <ClCompile Include="..\..\..\source\ImageSpr.cpp" />
     <ClCompile Include="..\..\..\source\NodeFactory.cpp" />
-    <ClCompile Include="..\..\..\source\NodeSprBase.cpp" />
+    <ClCompile Include="..\..\..\source\NodeSpr.cpp" />
+    <ClCompile Include="..\..\..\source\NodeSprCommon.cpp" />
+    <ClCompile Include="..\..\..\source\Textbox.cpp" />
+    <ClCompile Include="..\..\..\source\TextboxSpr.cpp" />
+    <ClCompile Include="..\..\..\source\TexturePacker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\sns\ColorParser.inl" />

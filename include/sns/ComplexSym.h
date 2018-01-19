@@ -2,6 +2,7 @@
 
 #include "sns/NodeSym.h"
 
+#include <bs/typedef.h>
 #include <memmgr/LinearAllocator.h>
 
 #include <string>
@@ -47,10 +48,18 @@ public:
 		size_t GetBinSize() const;
 		void StoreToBin(bs::ExportStream& es) const;
 
+		static size_t MemSize() {
+			return ALIGN_4BYTE(sizeof(Action) + bs::PTR_SIZE_DIFF * 2);
+		}
+
 	}; // Action
 
 private:
 	size_t GetBinSize() const;
+
+	static size_t MemSize() {
+		return ALIGN_4BYTE(sizeof(ComplexSym) + bs::PTR_SIZE_DIFF * 2);
+	}
 
 private:
 	int16_t m_scissor[4];
@@ -60,7 +69,7 @@ private:
 
 	Action* m_actions;
 
-	NodeSpr* m_children[1];
+	NodeSpr** m_children;
 
 }; // ComplexSym
 

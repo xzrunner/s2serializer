@@ -1,4 +1,4 @@
-#include "sns/NodeSprBase.h"
+#include "sns/NodeSprCommon.h"
 #include "sns/ColorParser.h"
 
 #include <bs/ImportStream.h>
@@ -11,7 +11,7 @@
 namespace sns
 {
 
-NodeSprBase::NodeSprBase()
+NodeSprCommon::NodeSprCommon()
 	: m_sym_path(nullptr)
 	, m_name(nullptr)
 	, m_type(0)
@@ -19,25 +19,25 @@ NodeSprBase::NodeSprBase()
 {
 }
 
-size_t NodeSprBase::GetBinSize() const
+size_t NodeSprCommon::GetBinSize() const
 {
 	size_t sz = 0;
 	sz += bs::pack_size(m_sym_path); // sym_path
 	sz += bs::pack_size(m_name);     // name
-	sz += bs::pack_size(m_type);     // type
+	sz += sizeof(uint32_t);          // type
 	sz += DataSize(m_type);          // data
 	return sz;
 }
 
-void NodeSprBase::StoreToBin(bs::ExportStream& es) const
+void NodeSprCommon::StoreToBin(bs::ExportStream& es) const
 {
-	es.Write(m_sym_path); // sym_path
-	es.Write(m_name);     // name
-	es.Write(m_type);     // type
+	es.Write(m_sym_path);                    // sym_path
+	es.Write(m_name);                        // name
+	es.Write(static_cast<uint32_t>(m_type)); // type
 	es.WriteBlock(reinterpret_cast<uint8_t*>(m_data), DataSize(m_type)); // data
 }
 
-void NodeSprBase::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void NodeSprCommon::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 	// store name
 	if (m_name) {
@@ -52,31 +52,61 @@ void NodeSprBase::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAlloca
 	int idx = 0;
 	// store scale
 	if ((m_type & SCALE_MASK) && (m_data[idx] != HIGH_FIXED_TRANS_PRECISION || m_data[idx + 1] != HIGH_FIXED_TRANS_PRECISION)) {
-		val["x scale"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
-		val["y scale"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+		val["x scale"] = bs::int2float(m_data[idx], HIGH_FIXED_TRANS_PRECISION);
+		val["y scale"] = bs::int2float(m_data[idx], HIGH_FIXED_TRANS_PRECISION);
 	}
+	idx += 2;
 	// store shear
 	if ((m_type & SHEAR_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
-		val["x shear"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
-		val["y shear"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+		val["x shear"] = bs::int2float(m_data[idx], HIGH_FIXED_TRANS_PRECISION);
+		val["y shear"] = bs::int2float(m_data[idx], HIGH_FIXED_TRANS_PRECISION);
 	}
+	idx += 2;
 	// store offset
 	if ((m_type & OFFSET_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
-		val["x offset"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
-		val["y offset"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+		val["x offset"] = bs::int2float(m_data[idx], LOW_FIXED_TRANS_PRECISION);
+		val["y offset"] = bs::int2float(m_data[idx], LOW_FIXED_TRANS_PRECISION);
 	}
+	idx += 2;
 	// store position
 	if ((m_type & POSITION_MASK) && (m_data[idx] != 0 || m_data[idx + 1] != 0)) {
-		val["position"]["x"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
-		val["position"]["y"] = bs::int2float(m_data[idx++], LOW_FIXED_TRANS_PRECISION);
+		val["position"]["x"] = bs::int2float(m_data[idx], LOW_FIXED_TRANS_PRECISION);
+		val["position"]["y"] = bs::int2float(m_data[idx], LOW_FIXED_TRANS_PRECISION);
 	}
+	idx += 2;
 	// store angle
 	if ((m_type & ANGLE_MASK) && m_data[idx] != 0) {
-		val["angle"]["x"] = bs::int2float(m_data[idx++], HIGH_FIXED_TRANS_PRECISION);
+		val["angle"]["x"] = bs::int2float(m_data[idx], HIGH_FIXED_TRANS_PRECISION);
 	}
+	idx += 1;
+	// store multi color
+	if ((m_type & COL_MUL_MASK) && m_data[idx] != 0xffffffff) { 
+		val["multi color"] = rapidjson::Value(ColorParser::RGBAToString(m_data[idx], BGRA).c_str(), alloc);
+	}
+	idx += 1;
+	// store add color
+	if ((m_type & COL_ADD_MASK) && m_data[idx] != 0) {
+		val["add color"] = rapidjson::Value(ColorParser::RGBAToString(m_data[idx], ABGR).c_str(), alloc);
+	}
+	idx += 1;
+	// store r trans
+	if (m_type & COL_R_MASK && m_data[idx] != 0xff000000) {
+		val["r trans"] = rapidjson::Value(ColorParser::RGBAToString(m_data[idx], RGBA).c_str(), alloc);
+	}
+	idx += 1;
+	// store g trans
+	if (m_type & COL_G_MASK && m_data[idx] != 0x00ff0000) {
+		val["g trans"] = rapidjson::Value(ColorParser::RGBAToString(m_data[idx], RGBA).c_str(), alloc);
+	}
+	idx += 1;
+	// store b trans
+	if (m_type & COL_R_MASK && m_data[idx] != 0x0000ff00) {
+		val["b trans"] = rapidjson::Value(ColorParser::RGBAToString(m_data[idx], RGBA).c_str(), alloc);
+	}
+	idx += 1;
 }
 
-void NodeSprBase::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 {
 	m_sym_path = is.String(alloc);
 	m_name = is.String(alloc);
@@ -135,7 +165,7 @@ void NodeSprBase::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	}
 }
 
-void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	// load name
 	m_name = nullptr;
@@ -217,8 +247,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	// load¡¡color mul
 	uint32_t col_mul = 0xffffffff;
 	if (val.HasMember("multi color")) {
-		auto& col_val(val["multi color"]);
-		col_mul = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), BGRA);
+		col_mul = ColorParser::StringToRGBA(val["multi color"], BGRA);
 	}
 	if (col_mul != 0xffffffff) {
 		m_type |= COL_MUL_MASK;
@@ -228,8 +257,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	// load color add
 	uint32_t col_add = 0;
 	if (val.HasMember("add color")) {
-		auto& col_val(val["add color"]);
-		col_add = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), ABGR);
+		col_add = ColorParser::StringToRGBA(val["add color"], ABGR);
 	}
 	if (col_add != 0) {
 		m_type |= COL_ADD_MASK;
@@ -239,8 +267,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	// load color rmap
 	uint32_t col_rmap = 0xff000000;
 	if (val.HasMember("r trans")) {
-		auto& col_val(val["r trans"]);
-		col_rmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_rmap = ColorParser::StringToRGBA(val["r trans"], RGBA);
 		col_rmap &= 0xffffff00;
 	}
 	if (col_rmap != 0xff000000) {
@@ -251,8 +278,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	// load color gmap
 	uint32_t col_gmap = 0x00ff0000;
 	if (val.HasMember("g trans")) {
-		auto& col_val(val["g trans"]);
-		col_gmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_gmap = ColorParser::StringToRGBA(val["g trans"], RGBA);
 		col_gmap &= 0xffffff00;
 	}
 	if (col_gmap != 0x00ff0000) {
@@ -263,8 +289,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	// load color bmap
 	uint32_t col_bmap = 0x0000ff00;
 	if (val.HasMember("b trans")) {
-		auto& col_val(val["b trans"]);
-		col_bmap = ColorParser::StringToRGBA(col_val.GetString(), col_val.GetStringLength(), RGBA);
+		col_bmap = ColorParser::StringToRGBA(val["b trans"], RGBA);
 		col_bmap &= 0xffffff00;
 	}
 	if (col_bmap != 0x0000ff00) {
@@ -285,7 +310,7 @@ void NodeSprBase::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Valu
 	}
 }
 
-size_t NodeSprBase::DataSize(uint32_t type)
+size_t NodeSprCommon::DataSize(uint32_t type)
 {
 	size_t sz = 0;
 
@@ -338,7 +363,7 @@ size_t NodeSprBase::DataSize(uint32_t type)
 	return ALIGN_4BYTE(sz);
 }
 
-char* NodeSprBase::CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+char* NodeSprCommon::CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
 {
 	size_t len = val.GetStringLength();
 	if (len == 0) {

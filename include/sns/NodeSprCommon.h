@@ -15,10 +15,10 @@ namespace bs { class ImportStream; class ExportStream; }
 namespace sns
 {
 
-class NodeSprBase : private cu::Uncopyable
+class NodeSprCommon : private cu::Uncopyable
 {
 public:
-	NodeSprBase();
+	NodeSprCommon();
 
 	//
 	// serialization
@@ -34,6 +34,7 @@ public:
 	void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val);
 
 	const char* GetFilepath() const { return m_sym_path; }
+	const char* GetName() const { return m_name; }
 
 	uint32_t GetType() const { return m_type; }
 	const uint32_t* GetData() const { return m_data; }
@@ -81,6 +82,6 @@ private:
 	uint32_t  m_type;
 	uint32_t* m_data;
 
-}; // NodeSprBase
+}; // NodeSprCommon
 
 }
