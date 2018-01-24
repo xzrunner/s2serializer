@@ -49,9 +49,9 @@ void TextboxSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocat
 	val["tid"].SetString(m_tid.c_str(), alloc);
 }
 
-void TextboxSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void TextboxSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
-	NodeSpr::LoadFromBin(alloc, is);
+	NodeSpr::LoadFromBin(alloc, dir, is);
 
 	m_tb.LoadFromBin(alloc, is);
 	
@@ -59,9 +59,9 @@ void TextboxSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	m_tid  = is.String();
 }
 
-void TextboxSpr::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void TextboxSpr::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
-	NodeSpr::LoadFromJson(alloc, val);
+	NodeSpr::LoadFromJson(alloc, dir, val);
 
 	m_tb.LoadFromJson(alloc, val["text"]);
 

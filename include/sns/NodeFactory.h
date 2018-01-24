@@ -18,13 +18,17 @@ class NodeSym;
 class NodeFactory
 {
 public:
-	static NodeSpr* CreateSprFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	static NodeSpr* CreateSprFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+	static NodeSpr* CreateSprFromBin(mm::LinearAllocator& alloc, const std::string& dir,
+		bs::ImportStream& is);
+	static NodeSpr* CreateSprFromJson(mm::LinearAllocator& alloc, const std::string& dir, 
+		const rapidjson::Value& val);
 
-	static NodeSym* CreateSymFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is);
+	static NodeSym* CreateSymFromBin(mm::LinearAllocator& alloc, const std::string& dir,
+		bs::ImportStream& is);
 	static NodeSym* CreateSymFromBin(mm::LinearAllocator& alloc, const std::string& filepath);
 	static NodeSym* CreateSymFromJson(mm::LinearAllocator& alloc, const std::string& filepath);
-	static NodeSym* CreateSymFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type);
+	static NodeSym* CreateSymFromJson(mm::LinearAllocator& alloc, const std::string& dir, 
+		const rapidjson::Value& val, NodeType type);
 
 private:
 	static NodeType GetNodeType(const std::string& filepath);

@@ -24,8 +24,8 @@ public:
 	//
 	// deserialization
 	//
-	static AnimSym* Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	static AnimSym* Create(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+	static AnimSym* Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is);
+	static AnimSym* Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val);
 	
 private:
 	size_t GetBinSize() const;
@@ -83,8 +83,10 @@ public:
 			return ALIGN_4BYTE(sizeof(Frame) + bs::PTR_SIZE_DIFF * 2);
 		}
 
-		void Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
-		void Create(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+		void Create(mm::LinearAllocator& alloc, const std::string& dir,
+			bs::ImportStream& is);
+		void Create(mm::LinearAllocator& alloc, const std::string& dir, 
+			const rapidjson::Value& val);
 	};
 
 	struct Layer
@@ -100,8 +102,10 @@ public:
 			return ALIGN_4BYTE(sizeof(Layer) + bs::PTR_SIZE_DIFF);
 		}
 
-		void Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
-		void Create(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+		void Create(mm::LinearAllocator& alloc, const std::string& dir,
+			bs::ImportStream& is);
+		void Create(mm::LinearAllocator& alloc, const std::string& dir,
+			const rapidjson::Value& val);
 	};
 
 public:

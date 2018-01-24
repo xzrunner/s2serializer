@@ -20,8 +20,8 @@ public:
 	//
 	// deserialization
 	//
-	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) override;
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) override;
+	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) override;
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
 	
 //private:
 //	int16_t m_xmin, m_ymin, m_xmax, m_ymax;

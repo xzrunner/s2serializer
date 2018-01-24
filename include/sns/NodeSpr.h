@@ -26,8 +26,8 @@ public:
 	// deserialization
 	//
 	
-	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) = 0;
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) = 0;
+	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) = 0;
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) = 0;
 
 	const NodeSprCommon& GetCommon() const { return m_common; }
 

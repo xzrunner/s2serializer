@@ -3,7 +3,6 @@
 #include "sns/NodeSym.h"
 
 #include <bs/typedef.h>
-#include <memmgr/LinearAllocator.h>
 
 #include <string>
 #include <memory>
@@ -28,8 +27,8 @@ public:
 	//
 	// deserialization
 	//
-	static ComplexSym* Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
-	static ComplexSym* Create(mm::LinearAllocator& alloc, const rapidjson::Value& val);
+	static ComplexSym* Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is);
+	static ComplexSym* Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val);
 
 	void GetScissor(int16_t& xmin, int16_t& ymin, int16_t& xmax, int16_t& ymax) const;
 

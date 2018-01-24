@@ -38,7 +38,7 @@ void AnimSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<
 
 }
 
-AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
+AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
 	void* ptr = alloc.alloc<char>(MemSize());
 	AnimSym* sym = new (ptr) AnimSym();
@@ -50,13 +50,13 @@ AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	sym->m_layers_n = is.UInt16();
 	sym->m_layers = static_cast<Layer*>(alloc.alloc<char>(Layer::MemSize() * sym->m_layers_n));
 	for (size_t i = 0; i < sym->m_layers_n; ++i) {
-		sym->m_layers[i].Create(alloc, is);
+		sym->m_layers[i].Create(alloc, dir, is);
 	}
 
 	return sym;
 }
 
-AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	void* ptr = alloc.alloc<char>(MemSize());
 	AnimSym* sym = new (ptr) AnimSym();
@@ -69,7 +69,7 @@ AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val
 	sym->m_layers = static_cast<Layer*>(alloc.alloc<char>(sz));
 	int layer_idx = 0;
 	for (auto& layer : layers) {
-		sym->m_layers[layer_idx++].Create(alloc, layer);
+		sym->m_layers[layer_idx++].Create(alloc, dir, layer);
 	}
 
 	return sym;
@@ -245,7 +245,7 @@ void AnimSym::Frame::StoreToBin(bs::ExportStream& es) const
 	}
 }
 
-void AnimSym::Frame::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
 	index = is.UInt16(); // index
 	tween = is.UInt8();  // tween
@@ -253,7 +253,7 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	actors_n = is.UInt16();
 	actors = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * actors_n));
 	for (size_t i = 0; i < actors_n; ++i) {
-		actors[i] = NodeFactory::CreateSprFromBin(alloc, is);
+		actors[i] = NodeFactory::CreateSprFromBin(alloc, dir, is);
 	}
 	// lerps
 	lerps_n = is.UInt16();
@@ -263,7 +263,7 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	}
 }
 
-void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	index = val["time"].GetInt();
 	tween = val["tween"].GetBool();
@@ -276,7 +276,7 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const rapidjson::Value& 
 	memset(actors, 0, sz);
 	int actor_idx = 0;
 	for (auto& src_actor : actors_val) {
-		actors[actor_idx++] = NodeFactory::CreateSprFromJson(alloc, src_actor);
+		actors[actor_idx++] = NodeFactory::CreateSprFromJson(alloc, dir, src_actor);
 	}
 
 	// load lerps
@@ -320,16 +320,18 @@ void AnimSym::Layer::StoreToBin(bs::ExportStream& es) const
 	}
 }
 
-void AnimSym::Layer::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void AnimSym::Layer::Create(mm::LinearAllocator& alloc, const std::string& dir,
+	                        bs::ImportStream& is)
 {
 	frames_n = is.UInt16();
 	frames = static_cast<Frame*>(alloc.alloc<char>(Frame::MemSize() * frames_n));
 	for (size_t i = 0; i < frames_n; ++i) {
-		frames[i].Create(alloc, is);
+		frames[i].Create(alloc, dir, is);
 	}
 }
 
-void AnimSym::Layer::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void AnimSym::Layer::Create(mm::LinearAllocator& alloc, const std::string& dir, 
+	                        const rapidjson::Value& val)
 {
 	auto frames_val = val["frame"].GetArray();
 	frames_n = frames_val.Size();
@@ -339,7 +341,7 @@ void AnimSym::Layer::Create(mm::LinearAllocator& alloc, const rapidjson::Value& 
 	memset(frames, 0, sz);
 	int frame_idx = 0;
 	for (auto& frame : frames_val) {
-		frames[frame_idx++].Create(alloc, frame);
+		frames[frame_idx++].Create(alloc, dir, frame);
 	}
 }
 

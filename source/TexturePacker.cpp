@@ -2,6 +2,8 @@
 
 #include <js/RapidJsonHelper.h>
 
+#include <boost/filesystem.hpp>
+
 namespace sns
 {
 
@@ -60,7 +62,7 @@ void TexturePacker::FrameSrcData::
 Load(const rapidjson::Value& val, const std::string& src_dir)
 {
 	std::string filepath = val["filename"].GetString();
-	filename = src_dir + "\\" + filepath;
+	filename = boost::filesystem::absolute(filepath, src_dir).string();
 
 	frame.Load(val["frame"]);
 	rotated = val["rotated"].GetBool();

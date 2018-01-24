@@ -2,6 +2,7 @@
 #include "sns/NodeType.h"
 
 #include "sns/ImageSpr.h"
+#include "sns/Scale9Sym.h"
 #include "sns/TextboxSpr.h"
 #include "sns/ComplexSpr.h"
 #include "sns/ComplexSym.h"
@@ -11,36 +12,39 @@
 #include <guard/check.h>
 #include <bs/ImportStream.h>
 #include <js/RapidJsonHelper.h>
+#include <memmgr/LinearAllocator.h>
 
 #include <algorithm>
 #include <fstream>
 
+#include <boost/filesystem.hpp>
+
 namespace sns
 {
 
-NodeSpr* NodeFactory::CreateSprFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+NodeSpr* NodeFactory::CreateSprFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
 	NodeType type = static_cast<NodeType>(is.UInt8());
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 
 	NodeSpr* spr = CreateNodeSpr(alloc, type);
-	spr->LoadFromBin(alloc, is);
+	spr->LoadFromBin(alloc, dir, is);
 	
 	return spr;
 }
 
-NodeSpr* NodeFactory::CreateSprFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+NodeSpr* NodeFactory::CreateSprFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	NodeType type = GetNodeType(val["filepath"].GetString());
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 
 	NodeSpr* spr = CreateNodeSpr(alloc, type);
-	spr->LoadFromJson(alloc, val);
+	spr->LoadFromJson(alloc, dir, val);
 	
 	return spr;
 }
 
-NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
 	NodeSym* sym = nullptr;
 
@@ -48,11 +52,14 @@ NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, bs::ImportStr
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 	switch (type)
 	{
+	case NODE_SCALE9:
+		sym = Scale9Sym::Create(alloc, dir, is);
+		break;
 	case NODE_COMPLEX:
-		sym = ComplexSym::Create(alloc, is);
+		sym = ComplexSym::Create(alloc, dir, is);
 		break;
 	case NODE_ANIMATION:
-		sym = AnimSym::Create(alloc, is);
+		sym = AnimSym::Create(alloc, dir, is);
 		break;
 	default:
 		GD_REPORT_ASSERT("unknown node type.");
@@ -71,7 +78,8 @@ NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, const std::st
 	fin.read(data, len);
 	fin.close();
 
-	auto sym = CreateSymFromBin(alloc, bs::ImportStream(data, len));
+	auto dir = boost::filesystem::path(filepath).branch_path();
+	auto sym = CreateSymFromBin(alloc, dir.string(), bs::ImportStream(data, len));
 	delete[] data;
 
 	return sym;
@@ -83,10 +91,12 @@ NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const std::s
 	GD_ASSERT(type != NODE_INVALID, "err node type.");
 	rapidjson::Document doc;
 	js::RapidJsonHelper::ReadFromFile(filepath.c_str(), doc);
-	return CreateSymFromJson(alloc, doc, type);
+	auto dir = boost::filesystem::path(filepath).branch_path();
+	return CreateSymFromJson(alloc, dir.string(), doc, type);
 }
 
-NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val, NodeType type)
+NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const std::string& dir,
+	                                    const rapidjson::Value& val, NodeType type)
 {
 	NodeSym* sym = nullptr;
 
@@ -95,11 +105,14 @@ NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const rapidj
 	{
 	case NODE_IMAGE:
 		break;
+	case NODE_SCALE9:
+		sym = Scale9Sym::Create(alloc, dir, val);
+		break;
 	case NODE_COMPLEX:
-		sym = ComplexSym::Create(alloc, val);
+		sym = ComplexSym::Create(alloc, dir, val);
 		break;
 	case NODE_ANIMATION:
-		sym = AnimSym::Create(alloc, val);
+		sym = AnimSym::Create(alloc, dir, val);
 		break;
 	case NODE_TEXTBOX:
 		break;

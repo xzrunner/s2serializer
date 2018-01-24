@@ -8,6 +8,8 @@
 #include <bs/FixedPointNum.h>
 #include <memmgr/LinearAllocator.h>
 
+#include <boost/filesystem.hpp>
+
 namespace sns
 {
 
@@ -106,9 +108,12 @@ void NodeSprCommon::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllo
 	idx += 1;
 }
 
-void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, 
+	                            bs::ImportStream& is)
 {
-	m_sym_path = is.String(alloc);
+	auto filepath = is.String(alloc);
+	SetSymPath(alloc, dir, filepath);
+
 	m_name = is.String(alloc);
 	m_type = is.UInt32();
 
@@ -165,7 +170,8 @@ void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is
 	}
 }
 
-void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir,
+	                             const rapidjson::Value& val)
 {
 	// load name
 	m_name = nullptr;
@@ -176,7 +182,8 @@ void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Va
 	// load filepath
 	m_sym_path = nullptr;
 	if (val.HasMember("filepath")) {
-		m_sym_path = CopyJsonStr(alloc, val["filepath"]);
+		auto filepath = val["filepath"].GetString();
+		SetSymPath(alloc, dir, filepath);
 	}
 
 	m_type = 0;
@@ -376,6 +383,29 @@ char* NodeSprCommon::CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Va
 	ret[len] = 0;
 
 	return ret;
+}
+
+char* NodeSprCommon::CopyStr(mm::LinearAllocator& alloc, const std::string& str)
+{
+	size_t len = str.size();
+	if (len == 0) {
+		return nullptr;
+	}
+
+	char* ret = static_cast<char*>(alloc.alloc<char>(len + 1));
+
+	strncpy(ret, str.c_str(), len);
+	ret[len] = 0;
+
+	return ret;
+}
+
+void NodeSprCommon::SetSymPath(mm::LinearAllocator& alloc, const std::string& dir, 
+	                           const std::string& filepath)
+{
+	auto formated = boost::filesystem::canonical(
+		boost::filesystem::absolute(filepath, dir));
+	m_sym_path = CopyStr(alloc, formated.string());
 }
 
 }

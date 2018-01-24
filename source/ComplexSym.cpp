@@ -5,6 +5,7 @@
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
 #include <bs/Serializer.h>
+#include <memmgr/LinearAllocator.h>
 
 namespace sns
 {
@@ -52,7 +53,7 @@ void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocat
 	}
 }
 
-ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
+ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
 	void* ptr = alloc.alloc<char>(MemSize());
 	ComplexSym* sym = new (ptr) ComplexSym();
@@ -66,7 +67,7 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	sym->m_children_n = is.UInt16();
 	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
 	for (size_t i = 0; i < sym->m_children_n; ++i) {
-		sym->m_children[i] = NodeFactory::CreateSprFromBin(alloc, is);
+		sym->m_children[i] = NodeFactory::CreateSprFromBin(alloc, dir, is);
 	}
 
 	// actions
@@ -83,7 +84,7 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, bs::ImportStream& is)
 	return sym;
 }
 
-ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
 	void* ptr = alloc.alloc<char>(MemSize());
 	ComplexSym* sym = new (ptr) ComplexSym();
@@ -100,7 +101,7 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const rapidjson::Valu
 	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
 	int idx = 0;
 	for (auto& child : children) {
-		sym->m_children[idx++] = NodeFactory::CreateSprFromJson(alloc, child);
+		sym->m_children[idx++] = NodeFactory::CreateSprFromJson(alloc, dir, child);
 	}
 
 	// actions

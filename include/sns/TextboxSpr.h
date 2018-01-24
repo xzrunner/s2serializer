@@ -21,8 +21,8 @@ public:
 	//
 	// deserialization
 	//
-	virtual void LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is) override;
-	virtual void LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val) override;
+	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) override;
+	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
 
 private:
 	Textbox m_tb;

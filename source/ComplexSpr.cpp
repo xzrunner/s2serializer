@@ -32,16 +32,16 @@ void ComplexSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocat
 	NodeSpr::StoreToJson(val, alloc);
 }
 
-void ComplexSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void ComplexSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
-	NodeSpr::LoadFromBin(alloc, is);
+	NodeSpr::LoadFromBin(alloc, dir, is);
 
 	m_action = is.UInt16();
 }
 
-void ComplexSpr::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void ComplexSpr::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
-	NodeSpr::LoadFromJson(alloc, val);
+	NodeSpr::LoadFromJson(alloc, dir, val);
 }
 
 }

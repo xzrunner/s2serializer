@@ -18,14 +18,14 @@ void NodeSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<
 	m_common.StoreToJson(val, alloc);
 }
 
-void NodeSpr::LoadFromBin(mm::LinearAllocator& alloc, bs::ImportStream& is)
+void NodeSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)
 {
-	m_common.LoadFromBin(alloc, is);
+	m_common.LoadFromBin(alloc, dir, is);
 }
 
-void NodeSpr::LoadFromJson(mm::LinearAllocator& alloc, const rapidjson::Value& val)
+void NodeSpr::LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val)
 {
-	m_common.LoadFromJson(alloc, val);
+	m_common.LoadFromJson(alloc, dir, val);
 }
 
 }

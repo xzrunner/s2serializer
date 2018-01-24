@@ -22,6 +22,8 @@
     <ClInclude Include="..\..\..\include\sns\NodeSprCommon.h" />
     <ClInclude Include="..\..\..\include\sns\NodeSym.h" />
     <ClInclude Include="..\..\..\include\sns\NodeType.h" />
+    <ClInclude Include="..\..\..\include\sns\Scale9Spr.h" />
+    <ClInclude Include="..\..\..\include\sns\Scale9Sym.h" />
     <ClInclude Include="..\..\..\include\sns\Textbox.h" />
     <ClInclude Include="..\..\..\include\sns\TextboxSpr.h" />
     <ClInclude Include="..\..\..\include\sns\TexturePacker.h" />
@@ -36,6 +38,8 @@
     <ClCompile Include="..\..\..\source\NodeFactory.cpp" />
     <ClCompile Include="..\..\..\source\NodeSpr.cpp" />
     <ClCompile Include="..\..\..\source\NodeSprCommon.cpp" />
+    <ClCompile Include="..\..\..\source\Scale9Spr.cpp" />
+    <ClCompile Include="..\..\..\source\Scale9Sym.cpp" />
     <ClCompile Include="..\..\..\source\Textbox.cpp" />
     <ClCompile Include="..\..\..\source\TextboxSpr.cpp" />
     <ClCompile Include="..\..\..\source\TexturePacker.cpp" />
@@ -86,7 +90,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\editor-external\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\editor-external\rapidjson\include;..\..\..\..\editor-external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -100,7 +104,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\editor-external\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\editor-external\rapidjson\include;..\..\..\..\editor-external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

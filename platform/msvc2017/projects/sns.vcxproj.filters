@@ -22,6 +22,9 @@
     <Filter Include="07.anim">
       <UniqueIdentifier>{2ef4a97d-ae29-427f-98d5-acba28b38a36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.scale9">
+      <UniqueIdentifier>{7d8ab9be-2a58-4795-8c38-5675f10c5af0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h">
@@ -62,6 +65,12 @@
     <ClInclude Include="..\..\..\include\sns\AnimSym.h">
       <Filter>07.anim</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\Scale9Sym.h">
+      <Filter>02.scale9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\Scale9Spr.h">
+      <Filter>02.scale9</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
@@ -97,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\AnimSym.cpp">
       <Filter>07.anim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Scale9Sym.cpp">
+      <Filter>02.scale9</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Scale9Spr.cpp">
+      <Filter>02.scale9</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
