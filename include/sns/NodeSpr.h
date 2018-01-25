@@ -18,14 +18,13 @@ public:
 	//
 	// serialization
 	//
-	virtual size_t GetBinSize() const = 0;
-	virtual void StoreToBin(bs::ExportStream& es) const = 0;
-	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const = 0;
+	virtual size_t GetBinSize(const std::string& dir) const = 0;
+	virtual void StoreToBin(const std::string& dir, bs::ExportStream& es) const = 0;
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const = 0;
 
 	//
 	// deserialization
 	//
-	
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) = 0;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) = 0;
 

@@ -12,9 +12,9 @@ namespace sns
 
 static const float DEG_TO_RAD = 3.1415926f / 180.0f;
 
-void AnimSym::StoreToBin(uint8_t** data, size_t& length) const
+void AnimSym::StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const
 {
-	length = GetBinSize();
+	length = GetBinSize(dir);
 	*data = new uint8_t[length];
 	bs::ExportStream es(*data, length);
 
@@ -27,13 +27,14 @@ void AnimSym::StoreToBin(uint8_t** data, size_t& length) const
 	// layers
 	es.Write(static_cast<uint16_t>(m_layers_n));
 	for (size_t i = 0; i < m_layers_n; ++i) {
-		m_layers[i].StoreToBin(es);
+		m_layers[i].StoreToBin(dir, es);
 	}
 
 	GD_ASSERT(es.Empty(), "error bin sz");
 }
 
-void AnimSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void AnimSym::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                      rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 
 }
@@ -75,7 +76,7 @@ AnimSym* AnimSym::Create(mm::LinearAllocator& alloc, const std::string& dir, con
 	return sym;
 }
 
-size_t AnimSym::GetBinSize() const
+size_t AnimSym::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 
@@ -86,7 +87,7 @@ size_t AnimSym::GetBinSize() const
 	// layers
 	sz += sizeof(uint16_t); // m_layers_n
 	for (size_t i = 0; i < m_layers_n; ++i) {
-		sz += m_layers[i].GetBinSize();
+		sz += m_layers[i].GetBinSize(dir);
 	}
 
 	return sz;
@@ -211,7 +212,7 @@ int AnimSym::Lerp::GetDataNum(int type)
 /* class AnimSym::Frame                                                 */
 /************************************************************************/
 
-size_t AnimSym::Frame::GetBinSize() const
+size_t AnimSym::Frame::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 	sz += sizeof(int16_t);	// index
@@ -219,7 +220,7 @@ size_t AnimSym::Frame::GetBinSize() const
 	// actors
 	sz += sizeof(uint16_t);
 	for (size_t i = 0; i < actors_n; ++i) {
-		sz += actors[i]->GetBinSize();
+		sz += actors[i]->GetBinSize(dir);
 	}
 	// lerps
 	sz += sizeof(uint16_t);
@@ -229,14 +230,14 @@ size_t AnimSym::Frame::GetBinSize() const
 	return sz;
 }
 
-void AnimSym::Frame::StoreToBin(bs::ExportStream& es) const
+void AnimSym::Frame::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 	es.Write(static_cast<int16_t>(index)); // index
 	es.Write(static_cast<int8_t>(tween));  // tween
 	// actors
 	es.Write(static_cast<int16_t>(actors_n));
 	for (size_t i = 0; i < actors_n; ++i) {
-		actors[i]->StoreToBin(es);
+		actors[i]->StoreToBin(dir, es);
 	}
 	// lerps
 	es.Write(static_cast<int16_t>(lerps_n));
@@ -302,21 +303,21 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const std::string& dir, 
 /* class AnimSym::Layer                                                 */
 /************************************************************************/
 
-size_t AnimSym::Layer::GetBinSize() const
+size_t AnimSym::Layer::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 	sz += sizeof(uint16_t);	// frames_n
 	for (size_t i = 0; i < frames_n; ++i) {
-		sz += frames[i].GetBinSize();
+		sz += frames[i].GetBinSize(dir);
 	}
 	return sz;
 }
 
-void AnimSym::Layer::StoreToBin(bs::ExportStream& es) const
+void AnimSym::Layer::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 	es.Write(static_cast<uint16_t>(frames_n));
 	for (size_t i = 0; i < frames_n; ++i) {
-		frames[i].StoreToBin(es);
+		frames[i].StoreToBin(dir, es);
 	}
 }
 

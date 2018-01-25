@@ -21,8 +21,9 @@ public:
 	//
 	// serialization
 	//
-	virtual void StoreToBin(uint8_t** data, size_t& length) const override;
-	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const override;
+	virtual void StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const override;
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, 
+		rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
 	// deserialization
@@ -54,7 +55,7 @@ public:
 	}; // Action
 
 private:
-	size_t GetBinSize() const;
+	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
 		return ALIGN_4BYTE(sizeof(ComplexSym) + bs::PTR_SIZE_DIFF * 2);

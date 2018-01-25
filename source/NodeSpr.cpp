@@ -3,19 +3,20 @@
 namespace sns
 {
 
-size_t NodeSpr::GetBinSize() const
+size_t NodeSpr::GetBinSize(const std::string& dir) const
 {
-	return m_common.GetBinSize();
+	return m_common.GetBinSize(dir);
 }
 
-void NodeSpr::StoreToBin(bs::ExportStream& es) const
+void NodeSpr::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
-	m_common.StoreToBin(es);
+	m_common.StoreToBin(dir, es);
 }
 
-void NodeSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void NodeSpr::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                      rapidjson::MemoryPoolAllocator<>& alloc) const
 {
-	m_common.StoreToJson(val, alloc);
+	m_common.StoreToJson(dir, val, alloc);
 }
 
 void NodeSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)

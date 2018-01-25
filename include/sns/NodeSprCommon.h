@@ -23,9 +23,10 @@ public:
 	//
 	// serialization
 	//
-	size_t GetBinSize() const;
-	void StoreToBin(bs::ExportStream& es) const;
-	void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const;
+	size_t GetBinSize(const std::string& dir) const;
+	void StoreToBin(const std::string& dir, bs::ExportStream& es) const;
+	void StoreToJson(const std::string& dir, rapidjson::Value& val, 
+		rapidjson::MemoryPoolAllocator<>& alloc) const;
 
 	//
 	// deserialization
@@ -48,8 +49,9 @@ protected:
 	static char* CopyStr(mm::LinearAllocator& alloc, const std::string& str);
 
 private:
-	void SetSymPath(mm::LinearAllocator& alloc, const std::string& dir, 
-		const std::string& filepath);
+	std::string GetSymAbsolutePath(const std::string& dir, const std::string& filepath);
+	std::string GetSymRelativePath(const std::string& dir) const;
+	static void ChangeFileExtJsonToBin(std::string& filepath);
 
 public:
 	// geometry

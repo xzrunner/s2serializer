@@ -25,6 +25,12 @@
     <Filter Include="02.scale9">
       <UniqueIdentifier>{7d8ab9be-2a58-4795-8c38-5675f10c5af0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.icon">
+      <UniqueIdentifier>{93bdf0ed-8a8a-40e7-ab0b-5aa408f5623a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.texture">
+      <UniqueIdentifier>{b97c1d57-ec44-4d6c-ace4-665ca80d823b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h">
@@ -71,6 +77,12 @@
     <ClInclude Include="..\..\..\include\sns\Scale9Spr.h">
       <Filter>02.scale9</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\IconSym.h">
+      <Filter>03.icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\IconSpr.h">
+      <Filter>03.icon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
@@ -112,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\Scale9Spr.cpp">
       <Filter>02.scale9</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\IconSym.cpp">
+      <Filter>03.icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\IconSpr.cpp">
+      <Filter>03.icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

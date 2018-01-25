@@ -18,8 +18,9 @@ public:
 	//
 	// serialization
 	//
-	virtual void StoreToBin(uint8_t** data, size_t& length) const override;
-	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const override;
+	virtual void StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const override;
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, 
+		rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
 	// deserialization
@@ -28,7 +29,7 @@ public:
 	static AnimSym* Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val);
 	
 private:
-	size_t GetBinSize() const;
+	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
 		return ALIGN_4BYTE(sizeof(AnimSym) + bs::PTR_SIZE_DIFF);
@@ -76,8 +77,8 @@ public:
 		uint8_t   tween;
 		uint8_t   padding;
 
-		size_t GetBinSize() const;
-		void StoreToBin(bs::ExportStream& es) const;
+		size_t GetBinSize(const std::string& dir) const;
+		void StoreToBin(const std::string& dir, bs::ExportStream& es) const;
 
 		static size_t MemSize() {
 			return ALIGN_4BYTE(sizeof(Frame) + bs::PTR_SIZE_DIFF * 2);
@@ -95,8 +96,8 @@ public:
 		uint16_t frames_n;
 		uint16_t padding[3];
 
-		size_t GetBinSize() const;
-		void StoreToBin(bs::ExportStream& es) const;
+		size_t GetBinSize(const std::string& dir) const;
+		void StoreToBin(const std::string& dir, bs::ExportStream& es) const;
 
 		static size_t MemSize() {
 			return ALIGN_4BYTE(sizeof(Layer) + bs::PTR_SIZE_DIFF);

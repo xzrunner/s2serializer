@@ -6,23 +6,24 @@
 namespace sns
 {
 
-size_t ImageSpr::GetBinSize() const
+size_t ImageSpr::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
-	sz += sizeof(uint8_t);       // type
-	sz += NodeSpr::GetBinSize(); // common
+	sz += sizeof(uint8_t);          // type
+	sz += NodeSpr::GetBinSize(dir); // common
 	return sz;
 }
 
-void ImageSpr::StoreToBin(bs::ExportStream& es) const
+void ImageSpr::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 	es.Write(static_cast<uint8_t>(NODE_IMAGE)); // type
-	NodeSpr::StoreToBin(es);                    // common
+	NodeSpr::StoreToBin(dir, es);               // common
 }
 
-void ImageSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void ImageSpr::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                       rapidjson::MemoryPoolAllocator<>& alloc) const
 {
-	NodeSpr::StoreToJson(val, alloc);
+	NodeSpr::StoreToJson(dir, val, alloc);
 }
 
 void ImageSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)

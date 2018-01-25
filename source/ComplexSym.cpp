@@ -10,9 +10,9 @@
 namespace sns
 {
 
-void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
+void ComplexSym::StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const
 {
-	length = GetBinSize();
+	length = GetBinSize(dir);
 	*data = new uint8_t[length];
 	bs::ExportStream es(*data, length);
 	
@@ -27,7 +27,7 @@ void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
 	// children
 	es.Write(static_cast<uint16_t>(m_children_n));
 	for (size_t i = 0; i < m_children_n; ++i) {
-		m_children[i]->StoreToBin(es);
+		m_children[i]->StoreToBin(dir, es);
 	}
 
 	// actions
@@ -39,7 +39,8 @@ void ComplexSym::StoreToBin(uint8_t** data, size_t& length) const
 	GD_ASSERT(es.Empty(), "error bin sz");
 }
 
-void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void ComplexSym::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                         rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 	// scissor
 	val["xmin"] = m_scissor[0];
@@ -49,7 +50,7 @@ void ComplexSym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocat
 
 	// children
 	for (size_t i = 0; i < m_children_n; ++i) {
-		m_children[i]->StoreToJson(val["sprite"][i], alloc);
+		m_children[i]->StoreToJson(dir, val["sprite"][i], alloc);
 	}
 }
 
@@ -120,7 +121,7 @@ void ComplexSym::GetScissor(int16_t& xmin, int16_t& ymin, int16_t& xmax, int16_t
 	ymax = m_scissor[3];
 }
 
-size_t ComplexSym::GetBinSize() const
+size_t ComplexSym::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 
@@ -131,7 +132,7 @@ size_t ComplexSym::GetBinSize() const
 	// children
 	sz += sizeof(m_children_n);
 	for (size_t i = 0; i < m_children_n; ++i) {
-		sz += m_children[i]->GetBinSize();
+		sz += m_children[i]->GetBinSize(dir);
 	}
 	// actions
 	sz += sizeof(m_actions_n);

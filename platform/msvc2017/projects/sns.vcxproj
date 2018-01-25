@@ -16,6 +16,8 @@
     <ClInclude Include="..\..\..\include\sns\ColorParser.h" />
     <ClInclude Include="..\..\..\include\sns\ComplexSpr.h" />
     <ClInclude Include="..\..\..\include\sns\ComplexSym.h" />
+    <ClInclude Include="..\..\..\include\sns\IconSpr.h" />
+    <ClInclude Include="..\..\..\include\sns\IconSym.h" />
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h" />
     <ClInclude Include="..\..\..\include\sns\NodeSpr.h" />
     <ClInclude Include="..\..\..\include\sns\NodeFactory.h" />
@@ -34,6 +36,8 @@
     <ClCompile Include="..\..\..\source\ColorParser.cpp" />
     <ClCompile Include="..\..\..\source\ComplexSpr.cpp" />
     <ClCompile Include="..\..\..\source\ComplexSym.cpp" />
+    <ClCompile Include="..\..\..\source\IconSpr.cpp" />
+    <ClCompile Include="..\..\..\source\IconSym.cpp" />
     <ClCompile Include="..\..\..\source\ImageSpr.cpp" />
     <ClCompile Include="..\..\..\source\NodeFactory.cpp" />
     <ClCompile Include="..\..\..\source\NodeSpr.cpp" />

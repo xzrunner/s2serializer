@@ -7,29 +7,35 @@
 namespace sns
 {
 
-size_t ComplexSpr::GetBinSize() const
+ComplexSpr::ComplexSpr()
+	: m_action(0)
+{
+}
+
+size_t ComplexSpr::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 
-	sz += sizeof(uint8_t);       // type
-	sz += NodeSpr::GetBinSize(); // common
+	sz += sizeof(uint8_t);          // type
+	sz += NodeSpr::GetBinSize(dir); // common
 
-	sz += sizeof(uint16_t);      // action
+	sz += sizeof(uint16_t);         // action
 
 	return sz;
 }
 
-void ComplexSpr::StoreToBin(bs::ExportStream& es) const
+void ComplexSpr::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 	es.Write(static_cast<uint8_t>(NODE_COMPLEX)); // type
-	NodeSpr::StoreToBin(es);                      // common
+	NodeSpr::StoreToBin(dir, es);                 // common
 
 	es.Write(static_cast<uint16_t>(m_action));    // action
 }
 
-void ComplexSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void ComplexSpr::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                         rapidjson::MemoryPoolAllocator<>& alloc) const
 {
-	NodeSpr::StoreToJson(val, alloc);
+	NodeSpr::StoreToJson(dir, val, alloc);
 }
 
 void ComplexSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)

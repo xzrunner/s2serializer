@@ -21,9 +21,9 @@ Scale9Sym::Scale9Sym()
 	memset(m_children, 0, sizeof(m_children));
 }
 
-void Scale9Sym::StoreToBin(uint8_t** data, size_t& length) const
+void Scale9Sym::StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const
 {
-	length = GetBinSize();
+	length = GetBinSize(dir);
 	*data = new uint8_t[length];
 	bs::ExportStream es(*data, length);
 
@@ -42,14 +42,15 @@ void Scale9Sym::StoreToBin(uint8_t** data, size_t& length) const
 	// children
 	for (int i = 0; i < 9; ++i) {
 		if (m_children[i]) {
-			m_children[i]->StoreToBin(es);
+			m_children[i]->StoreToBin(dir, es);
 		}
 	}
 
 	GD_ASSERT(es.Empty(), "error bin sz");
 }
 
-void Scale9Sym::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void Scale9Sym::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                        rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 }
 
@@ -211,7 +212,7 @@ Scale9Sym* Scale9Sym::Create(mm::LinearAllocator& alloc, const std::string& dir,
 	return sym;
 }
 
-size_t Scale9Sym::GetBinSize() const
+size_t Scale9Sym::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 
@@ -224,7 +225,7 @@ size_t Scale9Sym::GetBinSize() const
 	// children
 	for (int i = 0; i < 9; ++i) {
 		if (m_children[i]) {
-			sz += m_children[i]->GetBinSize();
+			sz += m_children[i]->GetBinSize(dir);
 		}
 	}
 

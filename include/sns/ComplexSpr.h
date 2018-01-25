@@ -8,12 +8,15 @@ namespace sns
 class ComplexSpr : public NodeSpr
 {
 public:
+	ComplexSpr();
+
 	//
 	// serialization
 	//
-	virtual size_t GetBinSize() const override;
-	virtual void StoreToBin(bs::ExportStream& es) const override;
-	virtual void StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const override;
+	virtual size_t GetBinSize(const std::string& dir) const override;
+	virtual void StoreToBin(const std::string& dir, bs::ExportStream& es) const override;
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, 
+		rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
 	// deserialization
@@ -22,7 +25,7 @@ public:
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
 
 private:
-	uint32_t m_action = 0;
+	uint32_t m_action;
 
 }; // ComplexSpr
 

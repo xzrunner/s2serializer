@@ -13,12 +13,12 @@ TextboxSpr::TextboxSpr()
 {
 }
 
-size_t TextboxSpr::GetBinSize() const
+size_t TextboxSpr::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
 
-	sz += sizeof(uint8_t);       // type
-	sz += NodeSpr::GetBinSize(); // common
+	sz += sizeof(uint8_t);          // type
+	sz += NodeSpr::GetBinSize(dir); // common
 
 	sz += m_tb.GetBinSize();
 	
@@ -28,10 +28,10 @@ size_t TextboxSpr::GetBinSize() const
 	return sz;
 }
 
-void TextboxSpr::StoreToBin(bs::ExportStream& es) const
+void TextboxSpr::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
 	es.Write(static_cast<uint8_t>(NODE_TEXTBOX)); // type
-	NodeSpr::StoreToBin(es);                      // common
+	NodeSpr::StoreToBin(dir, es);                 // common
 
 	m_tb.StoreToBin(es);
 
@@ -39,14 +39,15 @@ void TextboxSpr::StoreToBin(bs::ExportStream& es) const
 	es.Write(m_tid);
 }
 
-void TextboxSpr::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void TextboxSpr::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                         rapidjson::MemoryPoolAllocator<>& alloc) const
 {
-	NodeSpr::StoreToJson(val, alloc);
+	NodeSpr::StoreToJson(dir, val, alloc);
 
-	m_tb.StoreToJson(val, alloc);
+	m_tb.StoreToJson(val["text"], alloc);
 
-	val["text"].SetString(m_text.c_str(), alloc);
-	val["tid"].SetString(m_tid.c_str(), alloc);
+	val["text"]["text"].SetString(m_text.c_str(), alloc);
+	val["text"]["tid"].SetString(m_tid.c_str(), alloc);
 }
 
 void TextboxSpr::LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)

@@ -21,25 +21,33 @@ NodeSprCommon::NodeSprCommon()
 {
 }
 
-size_t NodeSprCommon::GetBinSize() const
+size_t NodeSprCommon::GetBinSize(const std::string& dir) const
 {
 	size_t sz = 0;
-	sz += bs::pack_size(m_sym_path); // sym_path
-	sz += bs::pack_size(m_name);     // name
-	sz += sizeof(uint32_t);          // type
-	sz += DataSize(m_type);          // data
+
+	auto path = GetSymRelativePath(dir);
+	ChangeFileExtJsonToBin(path);
+	sz += bs::pack_size(path);   // sym_path
+
+	sz += bs::pack_size(m_name); // name
+	sz += sizeof(uint32_t);      // type
+	sz += DataSize(m_type);      // data
+
 	return sz;
 }
 
-void NodeSprCommon::StoreToBin(bs::ExportStream& es) const
+void NodeSprCommon::StoreToBin(const std::string& dir, bs::ExportStream& es) const
 {
-	es.Write(m_sym_path);                    // sym_path
+	auto path = GetSymRelativePath(dir);
+	ChangeFileExtJsonToBin(path);
+	es.Write(path);                          // sym_path
 	es.Write(m_name);                        // name
 	es.Write(static_cast<uint32_t>(m_type)); // type
 	es.WriteBlock(reinterpret_cast<uint8_t*>(m_data), DataSize(m_type)); // data
 }
 
-void NodeSprCommon::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllocator<>& alloc) const
+void NodeSprCommon::StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	                            rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 	// store name
 	if (m_name) {
@@ -48,7 +56,9 @@ void NodeSprCommon::StoreToJson(rapidjson::Value& val, rapidjson::MemoryPoolAllo
 
 	// store filepath
 	if (m_sym_path) {
-		val["filepath"].SetString(m_sym_path, alloc);
+		auto path = GetSymRelativePath(dir);
+		ChangeFileExtJsonToBin(path);
+		val["filepath"].SetString(path.c_str(), alloc);
 	}
 
 	int idx = 0;
@@ -112,7 +122,7 @@ void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, const std::string& d
 	                            bs::ImportStream& is)
 {
 	auto filepath = is.String(alloc);
-	SetSymPath(alloc, dir, filepath);
+	m_sym_path = CopyStr(alloc, GetSymAbsolutePath(dir, filepath));
 
 	m_name = is.String(alloc);
 	m_type = is.UInt32();
@@ -183,7 +193,7 @@ void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const std::string& 
 	m_sym_path = nullptr;
 	if (val.HasMember("filepath")) {
 		auto filepath = val["filepath"].GetString();
-		SetSymPath(alloc, dir, filepath);
+		m_sym_path = CopyStr(alloc, GetSymAbsolutePath(dir, filepath));
 	}
 
 	m_type = 0;
@@ -400,12 +410,26 @@ char* NodeSprCommon::CopyStr(mm::LinearAllocator& alloc, const std::string& str)
 	return ret;
 }
 
-void NodeSprCommon::SetSymPath(mm::LinearAllocator& alloc, const std::string& dir, 
-	                           const std::string& filepath)
+std::string NodeSprCommon::GetSymAbsolutePath(const std::string& dir, const std::string& filepath)
 {
-	auto formated = boost::filesystem::canonical(
+	auto absolute = boost::filesystem::canonical(
 		boost::filesystem::absolute(filepath, dir));
-	m_sym_path = CopyStr(alloc, formated.string());
+	return absolute.string();
+}
+
+std::string NodeSprCommon::GetSymRelativePath(const std::string& dir) const
+{
+	auto absolute_dir = boost::filesystem::absolute(dir);
+	auto relative = boost::filesystem::relative(m_sym_path, absolute_dir);
+	return relative.string();
+}
+
+void NodeSprCommon::ChangeFileExtJsonToBin(std::string& filepath)
+{
+	auto pos = filepath.find(".json");
+	if (pos != std::string::npos) {
+		filepath = filepath.substr(0, pos) + ".bin";
+	}
 }
 
 }

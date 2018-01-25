@@ -2,6 +2,7 @@
 #include "sns/NodeType.h"
 
 #include "sns/ImageSpr.h"
+#include "sns/Scale9Spr.h"
 #include "sns/Scale9Sym.h"
 #include "sns/TextboxSpr.h"
 #include "sns/ComplexSpr.h"
@@ -183,8 +184,14 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, NodeType type)
 	case NODE_IMAGE:
 		CREATE_NODE_SPR(ImageSpr);
 		break;
+	case NODE_SCALE9:
+		CREATE_NODE_SPR(Scale9Spr);
+		break;
 	case NODE_COMPLEX:
 		CREATE_NODE_SPR(ComplexSpr);
+		break;
+	case NODE_ANIMATION:
+		CREATE_NODE_SPR(AnimSpr);
 		break;
 	case NODE_TEXTBOX:
 		CREATE_NODE_SPR(TextboxSpr);
