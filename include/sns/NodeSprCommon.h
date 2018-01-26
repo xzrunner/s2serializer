@@ -45,9 +45,6 @@ public:
 protected:
 	static size_t DataSize(uint32_t type);
 
-	static char* CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val);
-	static char* CopyStr(mm::LinearAllocator& alloc, const std::string& str);
-
 private:
 	std::string GetSymAbsolutePath(const std::string& dir, const std::string& filepath);
 	std::string GetSymRelativePath(const std::string& dir) const;

@@ -31,6 +31,9 @@
     <Filter Include="04.texture">
       <UniqueIdentifier>{b97c1d57-ec44-4d6c-ace4-665ca80d823b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{a6e6e792-7083-4c81-be82-604b9da5ffd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\sns\ImageSpr.h">
@@ -83,6 +86,9 @@
     <ClInclude Include="..\..\..\include\sns\IconSpr.h">
       <Filter>03.icon</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\Utility.h">
+      <Filter>tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\IconSpr.cpp">
       <Filter>03.icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Utility.cpp">
+      <Filter>tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

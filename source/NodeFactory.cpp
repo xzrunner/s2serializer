@@ -4,6 +4,8 @@
 #include "sns/ImageSpr.h"
 #include "sns/Scale9Spr.h"
 #include "sns/Scale9Sym.h"
+#include "sns/IconSpr.h"
+#include "sns/IconSym.h"
 #include "sns/TextboxSpr.h"
 #include "sns/ComplexSpr.h"
 #include "sns/ComplexSym.h"
@@ -55,6 +57,9 @@ NodeSym* NodeFactory::CreateSymFromBin(mm::LinearAllocator& alloc, const std::st
 	{
 	case NODE_SCALE9:
 		sym = Scale9Sym::Create(alloc, dir, is);
+		break;
+	case NODE_ICON:
+		sym = IconSym::Create(alloc, dir, is);
 		break;
 	case NODE_COMPLEX:
 		sym = ComplexSym::Create(alloc, dir, is);
@@ -108,6 +113,9 @@ NodeSym* NodeFactory::CreateSymFromJson(mm::LinearAllocator& alloc, const std::s
 		break;
 	case NODE_SCALE9:
 		sym = Scale9Sym::Create(alloc, dir, val);
+		break;
+	case NODE_ICON:
+		sym = IconSym::Create(alloc, dir, val);
 		break;
 	case NODE_COMPLEX:
 		sym = ComplexSym::Create(alloc, dir, val);
@@ -186,6 +194,9 @@ NodeSpr* NodeFactory::CreateNodeSpr(mm::LinearAllocator& alloc, NodeType type)
 		break;
 	case NODE_SCALE9:
 		CREATE_NODE_SPR(Scale9Spr);
+		break;
+	case NODE_ICON:
+		CREATE_NODE_SPR(IconSpr);
 		break;
 	case NODE_COMPLEX:
 		CREATE_NODE_SPR(ComplexSpr);

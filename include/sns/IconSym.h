@@ -28,11 +28,30 @@ public:
 	static IconSym* Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is);
 	static IconSym* Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val);
 
+	const char* GetBaseSymPath() const { return m_base_sym_path; }
+
+	int GetType() const { return m_type; }
+
+	const uint16_t* GetVertices() const { return m_vertices; }
+
+public:
+	enum IconType
+	{
+		ICON_UNKNOWN = 0,
+		ICON_RECT,
+		ICON_QUAD,
+		ICON_CHANGED_RECT,
+		ICON_CHANGED_SECTOR,
+
+	}; // IconType
+
+	static const int FIXED_TRANS_PRECISION = 1024;
+
 private:
 	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
-		return ALIGN_4BYTE(sizeof(IconSym) + bs::PTR_SIZE_DIFF);
+		return ALIGN_4BYTE(sizeof(IconSym) + bs::PTR_SIZE_DIFF * 2);
 	}
 
 private:
@@ -40,6 +59,8 @@ private:
 
 	uint16_t  m_vertices_n;
 	uint16_t* m_vertices;
+
+	const char* m_base_sym_path;
 
 }; // IconSym
 

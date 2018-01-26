@@ -1,5 +1,6 @@
 #include "sns/NodeSprCommon.h"
 #include "sns/ColorParser.h"
+#include "sns/Utility.h"
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
@@ -122,7 +123,7 @@ void NodeSprCommon::LoadFromBin(mm::LinearAllocator& alloc, const std::string& d
 	                            bs::ImportStream& is)
 {
 	auto filepath = is.String(alloc);
-	m_sym_path = CopyStr(alloc, GetSymAbsolutePath(dir, filepath));
+	m_sym_path = Utility::CopyStr2Alloc(alloc, GetSymAbsolutePath(dir, filepath));
 
 	m_name = is.String(alloc);
 	m_type = is.UInt32();
@@ -186,14 +187,14 @@ void NodeSprCommon::LoadFromJson(mm::LinearAllocator& alloc, const std::string& 
 	// load name
 	m_name = nullptr;
 	if (val.HasMember("name")) {
-		m_name = CopyJsonStr(alloc, val["name"]);
+		m_name = Utility::CopyStr2Alloc(alloc, val["name"]);
 	}
 
 	// load filepath
 	m_sym_path = nullptr;
 	if (val.HasMember("filepath")) {
 		auto filepath = val["filepath"].GetString();
-		m_sym_path = CopyStr(alloc, GetSymAbsolutePath(dir, filepath));
+		m_sym_path = Utility::CopyStr2Alloc(alloc, GetSymAbsolutePath(dir, filepath));
 	}
 
 	m_type = 0;
@@ -378,36 +379,6 @@ size_t NodeSprCommon::DataSize(uint32_t type)
 	}
 
 	return ALIGN_4BYTE(sz);
-}
-
-char* NodeSprCommon::CopyJsonStr(mm::LinearAllocator& alloc, const rapidjson::Value& val)
-{
-	size_t len = val.GetStringLength();
-	if (len == 0) {
-		return nullptr;
-	}
-
-	char* ret = static_cast<char*>(alloc.alloc<char>(len + 1));
-
-	strncpy(ret, val.GetString(), len);
-	ret[len] = 0;
-
-	return ret;
-}
-
-char* NodeSprCommon::CopyStr(mm::LinearAllocator& alloc, const std::string& str)
-{
-	size_t len = str.size();
-	if (len == 0) {
-		return nullptr;
-	}
-
-	char* ret = static_cast<char*>(alloc.alloc<char>(len + 1));
-
-	strncpy(ret, str.c_str(), len);
-	ret[len] = 0;
-
-	return ret;
 }
 
 std::string NodeSprCommon::GetSymAbsolutePath(const std::string& dir, const std::string& filepath)
