@@ -32,6 +32,7 @@ public:
 
 	int GetType() const { return m_type; }
 
+	int GetVerticesNum() const { return m_vertices_n; }
 	const uint16_t* GetVertices() const { return m_vertices; }
 
 public:
