@@ -10,6 +10,11 @@
 namespace sns
 {
 
+ComplexSym::ComplexSym()
+{
+	memset(this, 0, sizeof(*this));
+}
+
 void ComplexSym::StoreToBin(const std::string& dir, uint8_t** data, size_t& length) const
 {
 	length = GetBinSize(dir);
@@ -21,19 +26,19 @@ void ComplexSym::StoreToBin(const std::string& dir, uint8_t** data, size_t& leng
 
 	// scissor
 	for (size_t i = 0; i < 4; ++i) {
-		es.Write(static_cast<int16_t>(m_scissor[i]));
+		es.Write(static_cast<int16_t>(scissor[i]));
 	}
 
 	// children
-	es.Write(static_cast<uint16_t>(m_children_n));
-	for (size_t i = 0; i < m_children_n; ++i) {
-		m_children[i]->StoreToBin(dir, es);
+	es.Write(static_cast<uint16_t>(children_n));
+	for (size_t i = 0; i < children_n; ++i) {
+		children[i]->StoreToBin(dir, es);
 	}
 
 	// actions
-	es.Write(static_cast<uint16_t>(m_actions_n));
-	for (size_t i = 0; i < m_actions_n; ++i) {
-		m_actions[i].StoreToBin(es);
+	es.Write(static_cast<uint16_t>(actions_n));
+	for (size_t i = 0; i < actions_n; ++i) {
+		actions[i].StoreToBin(es);
 	}
 
 	GD_ASSERT(es.Empty(), "error bin sz");
@@ -43,14 +48,14 @@ void ComplexSym::StoreToJson(const std::string& dir, rapidjson::Value& val,
 	                         rapidjson::MemoryPoolAllocator<>& alloc) const
 {
 	// scissor
-	val["xmin"] = m_scissor[0];
-	val["ymin"] = m_scissor[1];
-	val["xmax"] = m_scissor[2];
-	val["ymax"] = m_scissor[3];
+	val["xmin"] = scissor[0];
+	val["ymin"] = scissor[1];
+	val["xmax"] = scissor[2];
+	val["ymax"] = scissor[3];
 
 	// children
-	for (size_t i = 0; i < m_children_n; ++i) {
-		m_children[i]->StoreToJson(dir, val["sprite"][i], alloc);
+	for (size_t i = 0; i < children_n; ++i) {
+		children[i]->StoreToJson(dir, val["sprite"][i], alloc);
 	}
 }
 
@@ -61,23 +66,23 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const std::string& di
 
 	// scissor
 	for (size_t i = 0; i < 4; ++i) {
-		sym->m_scissor[i] = is.UInt16();
+		sym->scissor[i] = is.UInt16();
 	}
 
 	// children
-	sym->m_children_n = is.UInt16();
-	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
-	for (size_t i = 0; i < sym->m_children_n; ++i) {
-		sym->m_children[i] = NodeFactory::CreateSprFromBin(alloc, dir, is);
+	sym->children_n = is.UInt16();
+	sym->children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->children_n));
+	for (size_t i = 0; i < sym->children_n; ++i) {
+		sym->children[i] = NodeFactory::CreateSprFromBin(alloc, dir, is);
 	}
 
 	// actions
 	uint16_t actions_n = is.UInt16();
-	sym->m_actions_n = static_cast<uint16_t>(actions_n);
-	sym->m_actions = static_cast<Action*>(alloc.alloc<char>(Action::MemSize() * actions_n));
+	sym->actions_n = static_cast<uint16_t>(actions_n);
+	sym->actions = static_cast<Action*>(alloc.alloc<char>(Action::MemSize() * actions_n));
 	for (size_t i = 0; i < actions_n; ++i)
 	{
-		Action* dst = &sym->m_actions[i];
+		Action* dst = &sym->actions[i];
 		dst->name = is.String(alloc);
 		dst->idx = bs::unpack_array16(alloc, is, 1, dst->n);
 	}
@@ -91,34 +96,26 @@ ComplexSym* ComplexSym::Create(mm::LinearAllocator& alloc, const std::string& di
 	ComplexSym* sym = new (ptr) ComplexSym();
 
 	// scissor
-	sym->m_scissor[0] = static_cast<int16_t>(val["xmin"].GetFloat());
-	sym->m_scissor[1] = static_cast<int16_t>(val["ymin"].GetFloat());
-	sym->m_scissor[2] = static_cast<int16_t>(val["xmax"].GetFloat());
-	sym->m_scissor[3] = static_cast<int16_t>(val["ymax"].GetFloat());
+	sym->scissor[0] = static_cast<int16_t>(val["xmin"].GetInt());
+	sym->scissor[1] = static_cast<int16_t>(val["ymin"].GetInt());
+	sym->scissor[2] = static_cast<int16_t>(val["xmax"].GetInt());
+	sym->scissor[3] = static_cast<int16_t>(val["ymax"].GetInt());
 
 	// children
 	auto children = val["sprite"].GetArray();
-	sym->m_children_n = children.Size();
-	sym->m_children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->m_children_n));
+	sym->children_n = children.Size();
+	sym->children = static_cast<NodeSpr**>(alloc.alloc<char>(sizeof(NodeSpr*) * sym->children_n));
 	int idx = 0;
 	for (auto& child : children) {
-		sym->m_children[idx++] = NodeFactory::CreateSprFromJson(alloc, dir, child);
+		sym->children[idx++] = NodeFactory::CreateSprFromJson(alloc, dir, child);
 	}
 
 	// actions
 	// todo	
-	sym->m_actions_n = 0;
-	sym->m_actions = nullptr;
+	sym->actions_n = 0;
+	sym->actions = nullptr;
 
 	return sym;
-}
-
-void ComplexSym::GetScissor(int16_t& xmin, int16_t& ymin, int16_t& xmax, int16_t& ymax) const
-{
-	xmin = m_scissor[0];
-	ymin = m_scissor[1];
-	xmax = m_scissor[2];
-	ymax = m_scissor[3];
 }
 
 size_t ComplexSym::GetBinSize(const std::string& dir) const
@@ -130,14 +127,14 @@ size_t ComplexSym::GetBinSize(const std::string& dir) const
 	// scissor
 	sz += sizeof(int16_t) * 4;
 	// children
-	sz += sizeof(m_children_n);
-	for (size_t i = 0; i < m_children_n; ++i) {
-		sz += m_children[i]->GetBinSize(dir);
+	sz += sizeof(children_n);
+	for (size_t i = 0; i < children_n; ++i) {
+		sz += children[i]->GetBinSize(dir);
 	}
 	// actions
-	sz += sizeof(m_actions_n);
-	for (size_t i = 0; i < m_actions_n; ++i) {
-		sz += m_actions[i].GetBinSize();
+	sz += sizeof(actions_n);
+	for (size_t i = 0; i < actions_n; ++i) {
+		sz += actions[i].GetBinSize();
 	}
 
 	return sz;

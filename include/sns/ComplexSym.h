@@ -18,6 +18,8 @@ class NodeSpr;
 class ComplexSym : public NodeSym
 {
 public:
+	ComplexSym();
+
 	//
 	// serialization
 	//
@@ -30,13 +32,6 @@ public:
 	//
 	static ComplexSym* Create(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is);
 	static ComplexSym* Create(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val);
-
-	void GetScissor(int16_t& xmin, int16_t& ymin, int16_t& xmax, int16_t& ymax) const;
-
-	size_t GetChildrenNum() const { return m_children_n; }
-	const NodeSpr* GetChildByIndex(size_t idx) const {
-		return idx < m_children_n ? m_children[idx] : nullptr;
-	}
 	
 public:
 	struct Action
@@ -61,15 +56,16 @@ private:
 		return ALIGN_4BYTE(sizeof(ComplexSym) + bs::PTR_SIZE_DIFF * 2);
 	}
 
-private:
-	int16_t m_scissor[4];
+public:
+	// xmin, ymin, xmax, ymax
+	int16_t   scissor[4];
 
-	uint16_t m_children_n;
-	uint16_t m_actions_n;
+	uint16_t  children_n;
+	uint16_t  actions_n;
 
-	Action* m_actions;
+	Action*   actions;
 
-	NodeSpr** m_children;
+	NodeSpr** children;
 
 }; // ComplexSym
 
