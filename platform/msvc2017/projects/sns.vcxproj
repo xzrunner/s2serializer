@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\..\include\sns\Textbox.h" />
     <ClInclude Include="..\..\..\include\sns\TextboxSpr.h" />
     <ClInclude Include="..\..\..\include\sns\TexturePacker.h" />
+    <ClInclude Include="..\..\..\include\sns\typedef.h" />
     <ClInclude Include="..\..\..\include\sns\Utility.h" />
   </ItemGroup>
   <ItemGroup>

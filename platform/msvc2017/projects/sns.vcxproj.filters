@@ -89,6 +89,7 @@
     <ClInclude Include="..\..\..\include\sns\Utility.h">
       <Filter>tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\sns\typedef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
