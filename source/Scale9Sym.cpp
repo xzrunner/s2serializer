@@ -1,6 +1,6 @@
-#include "sns/Scale9Sym.h"
-#include "sns/NodeFactory.h"
-#include "sns/NodeSpr.h"
+#include "s2s/Scale9Sym.h"
+#include "s2s/NodeFactory.h"
+#include "s2s/NodeSpr.h"
 
 #include <guard/check.h>
 #include <memmgr/LinearAllocator.h>
@@ -8,7 +8,7 @@
 #include <bs/ExportStream.h>
 #include <bs/ImportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 Scale9Sym::Scale9Sym()

@@ -11,26 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\sns\AnimSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\AnimSym.h" />
-    <ClInclude Include="..\..\..\include\sns\ColorParser.h" />
-    <ClInclude Include="..\..\..\include\sns\ComplexSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\ComplexSym.h" />
-    <ClInclude Include="..\..\..\include\sns\IconSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\IconSym.h" />
-    <ClInclude Include="..\..\..\include\sns\ImageSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeFactory.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeSprCommon.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeSym.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeType.h" />
-    <ClInclude Include="..\..\..\include\sns\Scale9Spr.h" />
-    <ClInclude Include="..\..\..\include\sns\Scale9Sym.h" />
-    <ClInclude Include="..\..\..\include\sns\Textbox.h" />
-    <ClInclude Include="..\..\..\include\sns\TextboxSpr.h" />
-    <ClInclude Include="..\..\..\include\sns\TexturePacker.h" />
-    <ClInclude Include="..\..\..\include\sns\typedef.h" />
-    <ClInclude Include="..\..\..\include\sns\Utility.h" />
+    <ClInclude Include="..\..\..\include\s2s\AnimSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\AnimSym.h" />
+    <ClInclude Include="..\..\..\include\s2s\ColorParser.h" />
+    <ClInclude Include="..\..\..\include\s2s\ComplexSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\ComplexSym.h" />
+    <ClInclude Include="..\..\..\include\s2s\IconSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\IconSym.h" />
+    <ClInclude Include="..\..\..\include\s2s\ImageSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeFactory.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeSprCommon.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeSym.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeType.h" />
+    <ClInclude Include="..\..\..\include\s2s\Scale9Spr.h" />
+    <ClInclude Include="..\..\..\include\s2s\Scale9Sym.h" />
+    <ClInclude Include="..\..\..\include\s2s\Textbox.h" />
+    <ClInclude Include="..\..\..\include\s2s\TextboxSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\TexturePacker.h" />
+    <ClInclude Include="..\..\..\include\s2s\typedef.h" />
+    <ClInclude Include="..\..\..\include\s2s\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\AnimSpr.cpp" />
@@ -52,12 +52,12 @@
     <ClCompile Include="..\..\..\source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\include\sns\ColorParser.inl" />
+    <None Include="..\..\..\include\s2s\ColorParser.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>1.sns</ProjectName>
+    <ProjectName>1.s2serializer</ProjectName>
     <ProjectGuid>{B6939ACB-3794-4B2A-95DA-F99ECDF79D0F}</ProjectGuid>
-    <RootNamespace>sns</RootNamespace>
+    <RootNamespace>s2serializer</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -87,12 +87,12 @@
     <_ProjectFileVersion>15.0.26730.12</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\sns\x86\Debug\</OutDir>
-    <IntDir>..\sns\x86\Debug\obj\</IntDir>
+    <OutDir>..\s2serializer\x86\Debug\</OutDir>
+    <IntDir>..\s2serializer\x86\Debug\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\sns\x86\Release\</OutDir>
-    <IntDir>..\sns\x86\Release\obj\</IntDir>
+    <OutDir>..\s2serializer\x86\Release\</OutDir>
+    <IntDir>..\s2serializer\x86\Release\obj\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

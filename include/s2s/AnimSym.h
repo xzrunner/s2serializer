@@ -1,13 +1,13 @@
 #pragma once
 
-#include "sns/NodeSym.h"
+#include "s2s/NodeSym.h"
 
 #include <bs/typedef.h>
 
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; class ExportStream; }
 
-namespace sns
+namespace s2s
 {
 
 class NodeSpr;

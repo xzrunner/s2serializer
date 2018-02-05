@@ -36,60 +36,60 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\sns\ImageSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\ImageSpr.h">
       <Filter>01.image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\ComplexSym.h">
+    <ClInclude Include="..\..\..\include\s2s\ComplexSym.h">
       <Filter>06.complex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\NodeType.h" />
-    <ClInclude Include="..\..\..\include\sns\NodeFactory.h" />
-    <ClInclude Include="..\..\..\include\sns\ComplexSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\NodeType.h" />
+    <ClInclude Include="..\..\..\include\s2s\NodeFactory.h" />
+    <ClInclude Include="..\..\..\include\s2s\ComplexSpr.h">
       <Filter>06.complex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\NodeSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\NodeSpr.h">
       <Filter>spr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\ColorParser.h">
+    <ClInclude Include="..\..\..\include\s2s\ColorParser.h">
       <Filter>spr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\NodeSym.h">
+    <ClInclude Include="..\..\..\include\s2s\NodeSym.h">
       <Filter>sym</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\TextboxSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\TextboxSpr.h">
       <Filter>05.textbox</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\Textbox.h">
+    <ClInclude Include="..\..\..\include\s2s\Textbox.h">
       <Filter>05.textbox</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\NodeSprCommon.h">
+    <ClInclude Include="..\..\..\include\s2s\NodeSprCommon.h">
       <Filter>spr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\TexturePacker.h">
+    <ClInclude Include="..\..\..\include\s2s\TexturePacker.h">
       <Filter>01.image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\AnimSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\AnimSpr.h">
       <Filter>07.anim</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\AnimSym.h">
+    <ClInclude Include="..\..\..\include\s2s\AnimSym.h">
       <Filter>07.anim</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\Scale9Sym.h">
+    <ClInclude Include="..\..\..\include\s2s\Scale9Sym.h">
       <Filter>02.scale9</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\Scale9Spr.h">
+    <ClInclude Include="..\..\..\include\s2s\Scale9Spr.h">
       <Filter>02.scale9</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\IconSym.h">
+    <ClInclude Include="..\..\..\include\s2s\IconSym.h">
       <Filter>03.icon</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\IconSpr.h">
+    <ClInclude Include="..\..\..\include\s2s\IconSpr.h">
       <Filter>03.icon</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\Utility.h">
+    <ClInclude Include="..\..\..\include\s2s\Utility.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\sns\typedef.h" />
+    <ClInclude Include="..\..\..\include\s2s\typedef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
@@ -143,7 +143,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\include\sns\ColorParser.inl">
+    <None Include="..\..\..\include\s2s\ColorParser.inl">
       <Filter>spr</Filter>
     </None>
   </ItemGroup>

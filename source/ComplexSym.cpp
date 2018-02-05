@@ -1,13 +1,13 @@
-#include "sns/ComplexSym.h"
-#include "sns/NodeFactory.h"
-#include "sns/NodeSpr.h"
+#include "s2s/ComplexSym.h"
+#include "s2s/NodeFactory.h"
+#include "s2s/NodeSpr.h"
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
 #include <bs/Serializer.h>
 #include <memmgr/LinearAllocator.h>
 
-namespace sns
+namespace s2s
 {
 
 ComplexSym::ComplexSym()

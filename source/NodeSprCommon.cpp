@@ -1,6 +1,6 @@
-#include "sns/NodeSprCommon.h"
-#include "sns/ColorParser.h"
-#include "sns/Utility.h"
+#include "s2s/NodeSprCommon.h"
+#include "s2s/ColorParser.h"
+#include "s2s/Utility.h"
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
@@ -11,7 +11,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace sns
+namespace s2s
 {
 
 NodeSprCommon::NodeSprCommon()

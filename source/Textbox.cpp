@@ -1,12 +1,12 @@
-#include "sns/Textbox.h"
-#include "sns/NodeType.h"
-#include "sns/ColorParser.h"
+#include "s2s/Textbox.h"
+#include "s2s/NodeType.h"
+#include "s2s/ColorParser.h"
 
 #include <bs/Serializer.h>
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 Textbox::Textbox()

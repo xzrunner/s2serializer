@@ -1,13 +1,13 @@
 #pragma once
 
-#include "sns/NodeSprCommon.h"
+#include "s2s/NodeSprCommon.h"
 
 #include <rapidjson/document.h>
 
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; class ExportStream; }
 
-namespace sns
+namespace s2s
 {
 
 class NodeSpr : private cu::Uncopyable

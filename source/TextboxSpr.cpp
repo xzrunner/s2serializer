@@ -1,12 +1,12 @@
-#include "sns/TextboxSpr.h"
-#include "sns/NodeType.h"
-#include "sns/ColorParser.h"
-#include "sns/NodeType.h"
+#include "s2s/TextboxSpr.h"
+#include "s2s/NodeType.h"
+#include "s2s/ColorParser.h"
+#include "s2s/NodeType.h"
 
 #include <bs/ExportStream.h>
 #include <bs/ImportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 TextboxSpr::TextboxSpr()

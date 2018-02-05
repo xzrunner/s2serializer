@@ -1,14 +1,14 @@
 #pragma once
 
-#include "sns/NodeSpr.h"
+#include "s2s/NodeSpr.h"
 
-namespace sns
+namespace s2s
 {
 
-class IconSpr : public NodeSpr
+class AnimSpr : public NodeSpr
 {
 public:
-	IconSpr();
+	AnimSpr();
 
 	//
 	// serialization
@@ -24,11 +24,17 @@ public:
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) override;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
 
-	float GetProcess() const;
-
+	float GetInterval() const;
+	int   GetFPS() const { return m_fps; }
+	bool  IsLoop() const { return m_loop; }
+	bool  IsStartRandom() const { return m_start_random; }
+	
 private:
-	uint16_t m_process;
+	uint32_t m_interval;
+	uint16_t m_fps;
+	uint8_t  m_loop;
+	uint8_t  m_start_random;
 
-}; // IconSpr
+}; // AnimSpr
 
 }

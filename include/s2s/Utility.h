@@ -6,7 +6,7 @@
 
 namespace mm { class LinearAllocator; }
 
-namespace sns
+namespace s2s
 {
 
 class Utility

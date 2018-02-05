@@ -1,11 +1,11 @@
-#include "sns/IconSpr.h"
-#include "sns/NodeType.h"
+#include "s2s/IconSpr.h"
+#include "s2s/NodeType.h"
 
 #include <bs/ExportStream.h>
 #include <bs/ImportStream.h>
 #include <bs/FixedPointNum.h>
 
-namespace sns
+namespace s2s
 {
 
 static const int FIXED_TRANS_PRECISION = 1024;

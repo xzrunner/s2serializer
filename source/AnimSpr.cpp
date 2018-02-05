@@ -1,12 +1,12 @@
-#include "sns/AnimSpr.h"
-#include "sns/NodeType.h"
+#include "s2s/AnimSpr.h"
+#include "s2s/NodeType.h"
 
 #include <guard/check.h>
 #include <bs/ExportStream.h>
 #include <bs/ImportStream.h>
 #include <bs/FixedPointNum.h>
 
-namespace sns
+namespace s2s
 {
 
 static const int INTERVAL_PRECISION = 1000;

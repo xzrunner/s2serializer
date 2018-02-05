@@ -1,21 +1,21 @@
 #pragma once
 
-#include "sns/NodeSpr.h"
+#include "s2s/NodeSpr.h"
 
-namespace sns
+namespace s2s
 {
 
-class Scale9Spr : public NodeSpr
+class IconSpr : public NodeSpr
 {
 public:
-	Scale9Spr();
+	IconSpr();
 
 	//
 	// serialization
 	//
 	virtual size_t GetBinSize(const std::string& dir) const override;
 	virtual void StoreToBin(const std::string& dir, bs::ExportStream& es) const override;
-	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val, 
+	virtual void StoreToJson(const std::string& dir, rapidjson::Value& val,
 		rapidjson::MemoryPoolAllocator<>& alloc) const override;
 
 	//
@@ -24,12 +24,11 @@ public:
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) override;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
 
-	uint16_t Width() const { return m_width; }
-	uint16_t Height() const { return m_height; }
+	float GetProcess() const;
 
 private:
-	uint16_t m_width, m_height;
+	uint16_t m_process;
 
-}; // Scale9Spr
+}; // IconSpr
 
 }

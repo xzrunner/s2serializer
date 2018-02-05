@@ -1,5 +1,5 @@
-sns/
+s2serializer/
 projects/*
 
-!projects/sns.vcxproj
-!projects/sns.vcxproj.filters
+!projects/s2serializer.vcxproj
+!projects/s2serializer.vcxproj.filters

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "sns/NodeSpr.h"
-#include "sns/Textbox.h"
+#include "s2s/NodeSpr.h"
+#include "s2s/Textbox.h"
 
-namespace sns
+namespace s2s
 {
 
 class TextboxSpr : public NodeSpr

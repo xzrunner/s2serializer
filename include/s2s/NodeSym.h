@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-namespace sns
+namespace s2s
 {
 
 class NodeSym

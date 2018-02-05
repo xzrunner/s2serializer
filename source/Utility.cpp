@@ -1,8 +1,8 @@
-#include "sns/Utility.h"
+#include "s2s/Utility.h"
 
 #include <memmgr/LinearAllocator.h>
 
-namespace sns
+namespace s2s
 {
 
 char* Utility::CopyStr2Alloc(mm::LinearAllocator& alloc, const rapidjson::Value& val)

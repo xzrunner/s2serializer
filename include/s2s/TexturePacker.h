@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-namespace sns
+namespace s2s
 {
 
 class TexturePacker

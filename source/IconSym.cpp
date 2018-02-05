@@ -1,6 +1,6 @@
-#include "sns/IconSym.h"
-#include "sns/NodeFactory.h"
-#include "sns/Utility.h"
+#include "s2s/IconSym.h"
+#include "s2s/NodeFactory.h"
+#include "s2s/Utility.h"
 
 #include <memmgr/LinearAllocator.h>
 #include <bs/FixedPointNum.h>
@@ -9,7 +9,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace sns
+namespace s2s
 {
 
 IconSym::IconSym()

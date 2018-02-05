@@ -1,10 +1,10 @@
-#include "sns/TexturePacker.h"
+#include "s2s/TexturePacker.h"
 
 #include <js/RapidJsonHelper.h>
 
 #include <boost/filesystem.hpp>
 
-namespace sns
+namespace s2s
 {
 
 TexturePacker::TexturePacker(const std::string& src_dir)

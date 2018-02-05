@@ -1,11 +1,11 @@
-#include "sns/ColorParser.h"
+#include "s2s/ColorParser.h"
 
 #include <guard/check.h>
 
 #include <cstring>
 #include <string>
 
-namespace sns
+namespace s2s
 {
 
 static inline 
@@ -124,22 +124,22 @@ std::string ColorParser::RGBAToString(uint32_t rgba, PIXEL_TYPE type)
 	b = (rgba >> 8) & 0xff;
 	a = rgba & 0xff;
 
-	if (type == sns::RGBA) {
+	if (type == s2s::RGBA) {
 		ret += channel2char(r);
 		ret += channel2char(g);
 		ret += channel2char(b);
 		ret += channel2char(a);
-	} else if (type == sns::ARGB) {
+	} else if (type == s2s::ARGB) {
 		ret += channel2char(a);
 		ret += channel2char(r);
 		ret += channel2char(g);
 		ret += channel2char(b);
-	} else if (type == sns::ABGR) {
+	} else if (type == s2s::ABGR) {
 		ret += channel2char(a);
 		ret += channel2char(b);
 		ret += channel2char(g);
 		ret += channel2char(r);
-	} else if (type == sns::BGRA) {
+	} else if (type == s2s::BGRA) {
 		ret += channel2char(b);
 		ret += channel2char(g);
 		ret += channel2char(r);

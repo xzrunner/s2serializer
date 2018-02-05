@@ -1,16 +1,16 @@
-#include "sns/NodeFactory.h"
-#include "sns/NodeType.h"
+#include "s2s/NodeFactory.h"
+#include "s2s/NodeType.h"
 
-#include "sns/ImageSpr.h"
-#include "sns/Scale9Spr.h"
-#include "sns/Scale9Sym.h"
-#include "sns/IconSpr.h"
-#include "sns/IconSym.h"
-#include "sns/TextboxSpr.h"
-#include "sns/ComplexSpr.h"
-#include "sns/ComplexSym.h"
-#include "sns/AnimSpr.h"
-#include "sns/AnimSym.h"
+#include "s2s/ImageSpr.h"
+#include "s2s/Scale9Spr.h"
+#include "s2s/Scale9Sym.h"
+#include "s2s/IconSpr.h"
+#include "s2s/IconSym.h"
+#include "s2s/TextboxSpr.h"
+#include "s2s/ComplexSpr.h"
+#include "s2s/ComplexSym.h"
+#include "s2s/AnimSpr.h"
+#include "s2s/AnimSym.h"
 
 #include <guard/check.h>
 #include <bs/ImportStream.h>
@@ -22,7 +22,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace sns
+namespace s2s
 {
 
 NodeSpr* NodeFactory::CreateSprFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is)

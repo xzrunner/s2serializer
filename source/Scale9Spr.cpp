@@ -1,10 +1,10 @@
-#include "sns/Scale9Spr.h"
-#include "sns/NodeType.h"
+#include "s2s/Scale9Spr.h"
+#include "s2s/NodeType.h"
 
 #include <bs/ExportStream.h>
 #include <bs/ImportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 Scale9Spr::Scale9Spr()

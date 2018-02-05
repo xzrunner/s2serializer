@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-namespace sns
+namespace s2s
 {
 
 // text		RGBA	old
@@ -35,4 +35,4 @@ public:
 
 }
 
-#include "sns/ColorParser.inl"
+#include "s2s/ColorParser.inl"

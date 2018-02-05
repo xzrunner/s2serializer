@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sns/NodeType.h"
+#include "s2s/NodeType.h"
 
 #include <rapidjson/document.h>
 
@@ -9,7 +9,7 @@
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; }
 
-namespace sns
+namespace s2s
 {
 
 class NodeSpr;

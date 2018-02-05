@@ -1,15 +1,15 @@
 #pragma once
 
-#include "sns/NodeSpr.h"
+#include "s2s/NodeSpr.h"
 
-#include <string>
-
-namespace sns
+namespace s2s
 {
-	
-class ImageSpr : public NodeSpr
+
+class Scale9Spr : public NodeSpr
 {
 public:
+	Scale9Spr();
+
 	//
 	// serialization
 	//
@@ -23,11 +23,13 @@ public:
 	//
 	virtual void LoadFromBin(mm::LinearAllocator& alloc, const std::string& dir, bs::ImportStream& is) override;
 	virtual void LoadFromJson(mm::LinearAllocator& alloc, const std::string& dir, const rapidjson::Value& val) override;
-	
-//private:
-//	int16_t m_xmin, m_ymin, m_xmax, m_ymax;
-//	int16_t m_offx, m_offy;
 
-}; // NodeImgae
+	uint16_t Width() const { return m_width; }
+	uint16_t Height() const { return m_height; }
+
+private:
+	uint16_t m_width, m_height;
+
+}; // Scale9Spr
 
 }

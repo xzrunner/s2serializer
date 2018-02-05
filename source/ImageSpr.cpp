@@ -1,9 +1,9 @@
-#include "sns/ImageSpr.h"
-#include "sns/NodeType.h"
+#include "s2s/ImageSpr.h"
+#include "s2s/NodeType.h"
 
 #include <bs/ExportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 size_t ImageSpr::GetBinSize(const std::string& dir) const

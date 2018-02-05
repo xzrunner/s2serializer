@@ -1,10 +1,10 @@
-#include "sns/ComplexSpr.h"
-#include "sns/NodeType.h"
+#include "s2s/ComplexSpr.h"
+#include "s2s/NodeType.h"
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
 
-namespace sns
+namespace s2s
 {
 
 ComplexSpr::ComplexSpr()

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sns
+namespace s2s
 {
 
 enum NodeType

@@ -5,7 +5,7 @@
 namespace mm { class LinearAllocator; }
 namespace bs { class ImportStream; class ExportStream; }
 
-namespace sns
+namespace s2s
 {
 
 class Textbox

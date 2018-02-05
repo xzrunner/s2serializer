@@ -1,6 +1,6 @@
-#include <sns/NodeSpr.h>
+#include <s2s/NodeSpr.h>
 
-namespace sns
+namespace s2s
 {
 
 size_t NodeSpr::GetBinSize(const std::string& dir) const

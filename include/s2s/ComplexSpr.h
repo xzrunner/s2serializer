@@ -1,8 +1,8 @@
 #pragma once
 
-#include "sns/NodeSpr.h"
+#include "s2s/NodeSpr.h"
 
-namespace sns
+namespace s2s
 {
 
 class ComplexSpr : public NodeSpr

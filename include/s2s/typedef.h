@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace sns
+namespace s2s
 {
 
 class NodeSpr;

@@ -1,13 +1,13 @@
-#include "sns/AnimSym.h"
-#include "sns/NodeFactory.h"
-#include "sns/NodeSpr.h"
+#include "s2s/AnimSym.h"
+#include "s2s/NodeFactory.h"
+#include "s2s/NodeSpr.h"
 
 #include <bs/ImportStream.h>
 #include <bs/ExportStream.h>
 #include <bs/Serializer.h>
 #include <memmgr/LinearAllocator.h>
 
-namespace sns
+namespace s2s
 {
 
 static const float DEG_TO_RAD = 3.1415926f / 180.0f;
