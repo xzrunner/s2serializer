@@ -34,6 +34,9 @@
     <Filter Include="tools">
       <UniqueIdentifier>{a6e6e792-7083-4c81-be82-604b9da5ffd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{e8b22c01-7c72-4dea-995f-69968686df2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\s2s\ImageSpr.h">
@@ -90,6 +93,9 @@
       <Filter>tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\s2s\typedef.h" />
+    <ClInclude Include="..\..\..\include\s2s\JsonResOP.h">
+      <Filter>json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\ImageSpr.cpp">
@@ -140,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\Utility.cpp">
       <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\JsonResOP.cpp">
+      <Filter>json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

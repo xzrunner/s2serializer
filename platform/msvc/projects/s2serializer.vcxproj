@@ -19,6 +19,7 @@
     <ClInclude Include="..\..\..\include\s2s\IconSpr.h" />
     <ClInclude Include="..\..\..\include\s2s\IconSym.h" />
     <ClInclude Include="..\..\..\include\s2s\ImageSpr.h" />
+    <ClInclude Include="..\..\..\include\s2s\JsonResOP.h" />
     <ClInclude Include="..\..\..\include\s2s\NodeSpr.h" />
     <ClInclude Include="..\..\..\include\s2s\NodeFactory.h" />
     <ClInclude Include="..\..\..\include\s2s\NodeSprCommon.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="..\..\..\source\IconSpr.cpp" />
     <ClCompile Include="..\..\..\source\IconSym.cpp" />
     <ClCompile Include="..\..\..\source\ImageSpr.cpp" />
+    <ClCompile Include="..\..\..\source\JsonResOP.cpp" />
     <ClCompile Include="..\..\..\source\NodeFactory.cpp" />
     <ClCompile Include="..\..\..\source\NodeSpr.cpp" />
     <ClCompile Include="..\..\..\source\NodeSprCommon.cpp" />
@@ -97,7 +99,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\mtrail\src\mtrail;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\sprite2\include;..\..\..\..\s2loader\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -111,7 +113,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\sm\src\sm;..\..\..\..\gimg\src\gimg;..\..\..\..\mtrail\src\mtrail;..\..\..\..\cu\src;..\..\..\..\bs\include;..\..\..\..\js\include;..\..\..\..\guard\include;..\..\..\..\memmgr\include;..\..\..\..\sprite2\include;..\..\..\..\s2loader\include;..\..\..\..\external\rapidjson\include;..\..\..\..\external\boost\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
