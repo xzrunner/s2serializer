@@ -272,7 +272,7 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const std::string& dir, 
 	// load actors
 	auto actors_val = val["actor"].GetArray();
 	actors_n = actors_val.Size();
-	size_t sz = bs::SIZEOF_POINTER * actors_n;
+	size_t sz = SIZEOF_POINTER * actors_n;
 	actors = static_cast<NodeSpr**>(alloc.alloc<char>(sz));
 	memset(actors, 0, sz);
 	int actor_idx = 0;
@@ -285,7 +285,7 @@ void AnimSym::Frame::Create(mm::LinearAllocator& alloc, const std::string& dir, 
 	{
 		auto lerps_val = val["lerp"].GetArray();
 		lerps_n = lerps_val.Size();
-		sz = bs::SIZEOF_POINTER * lerps_n;
+		sz = SIZEOF_POINTER * lerps_n;
 		lerps = static_cast<Lerp**>(alloc.alloc<char>(sz));
 		memset(lerps, 0, sz);
 		int lerp_idx = 0;
