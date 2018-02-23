@@ -47,7 +47,7 @@ private:
 	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
-		return ALIGN_4BYTE(sizeof(Scale9Sym) + bs::PTR_SIZE_DIFF);
+		return ALIGN_4BYTE(sizeof(Scale9Sym) + PTR_SIZE_DIFF);
 	}
 
 	static void GetImgSize(const NodeSpr* spr, int& w, int& h);

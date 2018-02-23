@@ -32,7 +32,7 @@ private:
 	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
-		return ALIGN_4BYTE(sizeof(AnimSym) + bs::PTR_SIZE_DIFF);
+		return ALIGN_4BYTE(sizeof(AnimSym) + PTR_SIZE_DIFF);
 	}
 
 public:
@@ -57,7 +57,7 @@ public:
 		void StoreToBin(bs::ExportStream& es) const;
 
 		static size_t MemSize() {
-			return ALIGN_4BYTE(sizeof(Lerp) + bs::PTR_SIZE_DIFF);
+			return ALIGN_4BYTE(sizeof(Lerp) + PTR_SIZE_DIFF);
 		}
 
 		static Lerp* Create(mm::LinearAllocator& alloc, bs::ImportStream& is);
@@ -81,7 +81,7 @@ public:
 		void StoreToBin(const std::string& dir, bs::ExportStream& es) const;
 
 		static size_t MemSize() {
-			return ALIGN_4BYTE(sizeof(Frame) + bs::PTR_SIZE_DIFF * 2);
+			return ALIGN_4BYTE(sizeof(Frame) + PTR_SIZE_DIFF * 2);
 		}
 
 		void Create(mm::LinearAllocator& alloc, const std::string& dir,
@@ -100,7 +100,7 @@ public:
 		void StoreToBin(const std::string& dir, bs::ExportStream& es) const;
 
 		static size_t MemSize() {
-			return ALIGN_4BYTE(sizeof(Layer) + bs::PTR_SIZE_DIFF);
+			return ALIGN_4BYTE(sizeof(Layer) + PTR_SIZE_DIFF);
 		}
 
 		void Create(mm::LinearAllocator& alloc, const std::string& dir,

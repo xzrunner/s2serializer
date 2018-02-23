@@ -52,7 +52,7 @@ private:
 	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
-		return ALIGN_4BYTE(sizeof(IconSym) + bs::PTR_SIZE_DIFF * 2);
+		return ALIGN_4BYTE(sizeof(IconSym) + PTR_SIZE_DIFF * 2);
 	}
 
 private:

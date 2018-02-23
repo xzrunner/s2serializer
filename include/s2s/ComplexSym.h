@@ -44,7 +44,7 @@ public:
 		void StoreToBin(bs::ExportStream& es) const;
 
 		static size_t MemSize() {
-			return ALIGN_4BYTE(sizeof(Action) + bs::PTR_SIZE_DIFF * 2);
+			return ALIGN_4BYTE(sizeof(Action) + PTR_SIZE_DIFF * 2);
 		}
 
 	}; // Action
@@ -53,7 +53,7 @@ private:
 	size_t GetBinSize(const std::string& dir) const;
 
 	static size_t MemSize() {
-		return ALIGN_4BYTE(sizeof(ComplexSym) + bs::PTR_SIZE_DIFF * 2);
+		return ALIGN_4BYTE(sizeof(ComplexSym) + PTR_SIZE_DIFF * 2);
 	}
 
 public:
